@@ -19,6 +19,7 @@ plugins:
       output_log: true
       ignore_page_pattern: index.md
       remove_navigation_page_pattern: index.md
+      template_dir_path: custom_template
 
 markdown_extensions:
   - pymdownx.highlight:

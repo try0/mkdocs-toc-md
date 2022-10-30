@@ -66,7 +66,7 @@ class TocMdPlugin(BasePlugin):
         ('remove_navigation_page_pattern', config_options.Type(str, default='')),
         ('page_title', config_options.Type(str, default='Contents')),
         ('page_description', config_options.Type(str, default=None)),
-        ('template_path', config_options.Type(str, default=None)),
+        ('template_dir_path', config_options.Type(str, default=None)),
     )
 
 
@@ -175,16 +175,17 @@ class TocMdPlugin(BasePlugin):
         template_path = [os.path.join(base_path, 'template')]
 
         # using custom template
-        if 'template_path' in self.config:
-            if self.config['template_path'] and os.path.isfile(self.config['template_path']):
-                template_path = self.config['template_path']
+        if 'template_dir_path' in self.config:
+            if self.config['template_dir_path'] and os.path.exists(self.config['template_dir_path']):
+                template_path = self.config['template_dir_path']
+                self.logger.info("Use custom template")
 
         jinja_env = Environment(
             loader = FileSystemLoader(template_path),
             trim_blocks = True
         )
 
-        template = jinja_env.get_template('default_toc.md.j2')
+        template = jinja_env.get_template('toc.md.j2')
         toc_output = template.render(
             page_title = self.config['page_title'],
             page_description = self.config['page_description'],

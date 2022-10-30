@@ -5,6 +5,7 @@
 
 
 # Contents
+Using custom template!
 Usage mkdocs-toc-md
 ## [mkdocs-toc-md](mkdocs-toc-md.md#mkdocs-toc-md)
 
