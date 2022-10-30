@@ -92,6 +92,9 @@ class TocMdPlugin(BasePlugin):
             article_headers = soup.find_all(['h1', 'h2', 'h3'])
             for h in article_headers:
 
+                if h.find('a', attrs={'class', 'headerlink'}):
+                     h.a.extract()
+
                 text = h.text
                 if h.name == 'h1':
                     toc_output += '\n\n## ' + h.text
