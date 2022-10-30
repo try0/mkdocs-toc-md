@@ -4,6 +4,27 @@ mkdocs-toc-md generates a table of contents page. You need to generate the toc m
 
 [Sample](https://github.com/try0/mkdocs-toc-md/blob/main/sample/docs/index.md?plain=1)
 
+
+## Usage
+
+1. Add plugin conifg to mkdocs.yml.
+
+    ```yml
+    plugins:
+      - toc-md:
+          page_title: Contents
+          pickup_description_meta: true
+          pickup_description_class: true
+          output_path: index.md
+          output_log: true
+          ignore_page_pattern: index.md
+          remove_navigation_page_pattern: index.md
+    ```
+
+1. Run `mkdocs serve` to output toc md file.
+
+
+
 ## Options
 
 * page_title: str  
