@@ -57,10 +57,11 @@ Put `toc.md.j2` in your custom template dir.
 plugins:
   - toc-md:
       page_title: Contents
-      pickup_description_meta: false
+      page_description: Usage mkdocs-toc-md
+      pickup_description_meta: true
       pickup_description_class: true
       output_path: index.md
-      output_log: false
+      output_log: true
       ignore_page_pattern: index.md
       remove_navigation_page_pattern: index.md
       template_dir_path: custom_template
