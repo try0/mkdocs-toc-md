@@ -1,5 +1,6 @@
 from setuptools import setup
 
+# python setup.py develop
 setup(
     name='mkdocs-toc-md',
     version='0.0.1',
