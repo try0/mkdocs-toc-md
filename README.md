@@ -10,15 +10,17 @@ mkdocs-toc-md generates a table of contents page. You need to generate the toc m
 1. Add plugin conifg to mkdocs.yml.
 
     ```yml
-    plugins:
+    pplugins:
       - toc-md:
           page_title: Contents
+          page_description: Usage mkdocs-toc-md
           pickup_description_meta: true
           pickup_description_class: true
           output_path: index.md
           output_log: true
           ignore_page_pattern: index.md
           remove_navigation_page_pattern: index.md
+          template_dir_path: custom_template
     ```
 
 1. Run `mkdocs serve` to output toc md file.
@@ -29,6 +31,9 @@ mkdocs-toc-md generates a table of contents page. You need to generate the toc m
 
 * page_title: str  
 h1 text in toc md.
+
+* page_description: str  
+Renders description after h1.
 
 * pickup_description_meta: bool  
 Renders description after h2 in toc md.
@@ -61,3 +66,6 @@ To prevent the table of contents page from listing itself, set the same value as
 Regular expression pattern of md filenames to remove navigation items.  
 To hide the navigation on the table of contents page, set the same value as the output file name (output_path).
 
+* template_dir_path: str  
+Path of template dir.
+Put `toc.md.j2` in your custom template dir.
