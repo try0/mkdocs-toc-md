@@ -2,6 +2,7 @@ site_name: mkdocs-toc-md
 nav:
   - "index.md"
   - "mkdocs-toc-md.md"
+  - nest.md: "nestfolder/nest.md"
 use_directory_urls: false
 
 theme:

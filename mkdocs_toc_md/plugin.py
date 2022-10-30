@@ -113,6 +113,7 @@ class TocMdPlugin(BasePlugin):
 
         ignore_file_pattern = re.compile(self.config['ignore_page_pattern'])
 
+        toc_headers = []
         # Pickup headers
         for page in self.nav.pages:
 
@@ -141,7 +142,6 @@ class TocMdPlugin(BasePlugin):
                         toc_description += description_elm.text
 
             # create template params
-            toc_headers = []
             article_headers = soup.find_all(['h1', 'h2', 'h3'])
             for h in article_headers:
 
@@ -168,6 +168,7 @@ class TocMdPlugin(BasePlugin):
                     toc_header.level = 6
 
                 toc_headers.append(toc_header)
+
 
         # render contents
         base_path = os.path.abspath(os.path.dirname(__file__))

@@ -6,7 +6,6 @@
 {% endif%}
 {% for header in toc_headers %}
 {% if header.level < 3 %}
-
 {{header.get_md_header()}}
 {% else %}
 {{header.get_md_ul_item()}}
