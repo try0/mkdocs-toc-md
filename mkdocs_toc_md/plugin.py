@@ -43,8 +43,7 @@ class TocMdPlugin(BasePlugin):
             print("remove toc")
 
             soup = BeautifulSoup(output_content, 'html5lib')
-            nav_elm = soup.find("nav", {"class": "md-nav md-nav--secondary"})
-            if nav_elm is not None:
+            for nav_elm in soup.find_all("nav", {"class": "md-nav md-nav--secondary"}):
                 nav_elm.decompose()
     
             souped_html = soup.prettify(soup.original_encoding)
