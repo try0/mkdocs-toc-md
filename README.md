@@ -1,6 +1,6 @@
 # mkdocs-toc-md
 
-mkdocs-toc-md generates a table of contents page. You need to generate the toc md file before `mkdocs build`.
+mkdocs-toc-md generates a table of contents page. To render as html, the toc md file must be generated before the `mkdocs build`.
 
 
 
@@ -14,7 +14,7 @@ mkdocs-toc-md generates a table of contents page. You need to generate the toc m
 1. Add plugin conifg to mkdocs.yml.
 
     ```yml
-    pplugins:
+    plugins:
       - toc-md:
           page_title: Contents
           page_description: Usage mkdocs-toc-md
