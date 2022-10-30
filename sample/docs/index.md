@@ -5,7 +5,9 @@
 
 
 # Contents
-Using custom template!
+**Using custom template!**
+
+
 Usage mkdocs-toc-md
 ## [mkdocs-toc-md](mkdocs-toc-md.md#mkdocs-toc-md)
 
@@ -30,3 +32,8 @@ mkdocs-toc-md generates a table of contents page.
 * [level3 article1](nestfolder\nest.md#level3-article1_1)
 * [level3 article2](nestfolder\nest.md#level3-article2_1)
 * [level3 article3](nestfolder\nest.md#level3-article3_1)
+
+
+---
+
+[GitHub](https://github.com/try0/mkdocs-toc-md)
