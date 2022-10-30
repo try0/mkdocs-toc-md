@@ -1,6 +1,6 @@
 # mkdocs-toc-md
 
-mkdocs-toc-md generates a table of contents page.
+mkdocs-toc-md generates a table of contents page. You need to generate the toc md file before `mkdocs build`.
 
 [Sample](https://github.com/try0/mkdocs-toc-md/blob/main/sample/docs/index.md?plain=1)
 
