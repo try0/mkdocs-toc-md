@@ -18,6 +18,8 @@ class TocMdPlugin(BasePlugin):
         ('remove_navigation_page_pattern', config_options.Type(str, default=True)),
     )
 
+    toc_output_cache = None
+
     def __init__(self):
         self.logger = logging.getLogger('mkdocs.toc-md')
         self.logger.setLevel(logging.INFO)
@@ -116,7 +118,7 @@ class TocMdPlugin(BasePlugin):
 
         if 'output_path' in self.config:
             output_path = self.config['output_path']
-            if output_path:
+            if output_path and toc_output != TocMdPlugin.toc_output_cache:
                 abs_md_path = os.path.join(config['docs_dir'], output_path)
                 os.makedirs(os.path.dirname(abs_md_path), exist_ok=True)
 
@@ -128,5 +130,8 @@ class TocMdPlugin(BasePlugin):
                 file = open(abs_md_path, mode, encoding='utf-8')
                 file.write(toc_output)
                 file.close()
+
+                # avoid infinite loop
+                TocMdPlugin.toc_output_cache = toc_output
 
 
