@@ -15,7 +15,8 @@ class TocMdPlugin(BasePlugin):
         ('output_path', config_options.Type(str, default='')),
         ('output_log', config_options.Type(bool, default=False)),
         ('ignore_page_pattern', config_options.Type(str, default='')),
-        ('remove_navigation_page_pattern', config_options.Type(str, default=True)),
+        ('remove_navigation_page_pattern', config_options.Type(str, default='')),
+        ('page_title', config_options.Type(str, default='Contents')),
     )
 
     toc_output_cache = None
@@ -88,6 +89,7 @@ class TocMdPlugin(BasePlugin):
                     if description_elm is not None:
                         toc_description += description_elm.text
 
+            toc_output += "# " + self.config['page_title']
 
             article_headers = soup.find_all(['h1', 'h2', 'h3'])
             for h in article_headers:
