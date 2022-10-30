@@ -10,10 +10,10 @@ mkdocs-toc-md generates a table of contents page.
 h1 text in toc md.
 
 * pickup_description_meta: bool  
-Renders description after h1.
+Renders description after h2 in toc md.
 
 * pickup_description_class: bool  
-Renders description after h1.
+Renders description after h2 in toc md.
 
 
   ```md
@@ -23,6 +23,8 @@ Renders description after h1.
   mkdocs-toc-md generates a table of contents page.
   </div>
   ```
+  
+  [sample](https://github.com/try0/mkdocs-toc-md/blob/main/sample/docs/index.md?plain=1#L9)
 
 * output_path: str  
 Path to save rendered toc md file.
