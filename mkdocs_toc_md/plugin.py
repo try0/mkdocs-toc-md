@@ -93,23 +93,20 @@ class TocMdPlugin(BasePlugin):
             article_headers = soup.find_all(['h1', 'h2', 'h3'])
             for h in article_headers:
 
-                if not h.find('a'):
-                    continue
-
-                link = h.a.extract()
                 text = h.text
-
                 if h.name == 'h1':
                     toc_output += '\n\n## ' + h.text
 
                     if toc_description:
                         toc_output += '\n' + toc_description + '\n'
                 elif h.name == 'h2':
-                    toc_output += '\n### [' + h.text + '](' + page.file.src_path + link.get('href') + ')\n'
+                    toc_output += '\n### [' + h.text + '](' + page.file.src_path + '#' + h.get('id') + ')\n'
                 elif h.name == 'h3' :
-                    toc_output += '* [' + h.text + '](' + page.file.src_path + link.get('href') + ')\n'
+                    toc_output += '* [' + h.text + '](' + page.file.src_path + '#' + h.get('id') + ')\n'
                 else:
                     continue
+
+
 
         # print to console
         if 'output_log' in self.config:
