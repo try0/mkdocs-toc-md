@@ -11,11 +11,14 @@ mkdocs-toc-md generates a table of contents page.
 ### page_title: str  
 h1 text in toc md.
 
-### pickup_description_meta: bool  
+### page_description: str
 Renders description after h1.
 
+### pickup_description_meta: bool  
+Renders description after h2.
+
 ### pickup_description_class: bool  
-Renders description after h1.
+Renders description after h2.
 
 
 ```md
@@ -42,6 +45,9 @@ To prevent the table of contents page from listing itself, set the same value as
 Regular expression pattern of md filenames to remove navigation items.  
 To hide the navigation on the table of contents page, set the same value as the output file name (output_path).
 
+### template_dir_path: str
+Path of template dir.
+Put `toc.md.j2` in your custom template dir.
 
 ## Sample 
 
@@ -57,6 +63,7 @@ plugins:
       output_log: false
       ignore_page_pattern: index.md
       remove_navigation_page_pattern: index.md
+      template_dir_path: custom_template
 ```
 
 
