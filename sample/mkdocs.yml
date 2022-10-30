@@ -11,6 +11,7 @@ theme:
 plugins:
   - toc-md:
       page_title: Contents
+      page_description: Usage mkdocs-toc-md
       pickup_description_meta: true
       pickup_description_class: true
       output_path: index.md
