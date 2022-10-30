@@ -69,7 +69,6 @@ class TocMdPlugin(BasePlugin):
         ('template_path', config_options.Type(str, default=None)),
     )
 
-    toc_output_cache = None
 
     def __init__(self):
         self.logger = logging.getLogger('mkdocs.toc-md')
@@ -97,7 +96,7 @@ class TocMdPlugin(BasePlugin):
         # remove navigation items
         remove_navigation_page_pattern = re.compile(self.config['remove_navigation_page_pattern'])
         if remove_navigation_page_pattern.match(page.file.src_path):
-            print("remove toc")
+            self.logger.info("Remove toc")
 
             soup = BeautifulSoup(output_content, 'html5lib')
             for nav_elm in soup.find_all("nav", {"class": "md-nav md-nav--secondary"}):
@@ -141,6 +140,7 @@ class TocMdPlugin(BasePlugin):
                     if description_elm is not None:
                         toc_description += description_elm.text
 
+            # create template params
             toc_headers = []
             article_headers = soup.find_all(['h1', 'h2', 'h3'])
             for h in article_headers:
@@ -197,21 +197,26 @@ class TocMdPlugin(BasePlugin):
 
         if 'output_path' in self.config:
             output_path = self.config['output_path']
-            if output_path and toc_output != TocMdPlugin.toc_output_cache:
+            if output_path:
                 abs_md_path = os.path.join(config['docs_dir'], output_path)
                 os.makedirs(os.path.dirname(abs_md_path), exist_ok=True)
 
-                self.logger.info(f'Output a toc.md to "{abs_md_path}".')
+                 # avoid infinite loop
+                if os.path.isfile(abs_md_path):
+                     with open(abs_md_path, 'r', encoding='utf-8') as file:
+                        old_content = file.read()
+                        if old_content == toc_output:
+                            return
+
+                self.logger.info(f'Output a toc markdown file to "{abs_md_path}".')
 
                 mode = 'x'
                 if os.path.isfile(abs_md_path):
                     mode = 'w'
-                file = open(abs_md_path, mode, encoding='utf-8')
-                file.write(toc_output)
-                file.close()
+                
+                with open(abs_md_path, mode, encoding='utf-8') as file:
+                    file.write(toc_output)
 
-                # avoid infinite loop
-                TocMdPlugin.toc_output_cache = toc_output
 
 
 
