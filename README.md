@@ -2,8 +2,12 @@
 
 mkdocs-toc-md generates a table of contents page. You need to generate the toc md file before `mkdocs build`.
 
-[Sample](https://github.com/try0/mkdocs-toc-md/blob/main/sample/docs/index.md?plain=1)
 
+
+## Sample
+
+[File](https://github.com/try0/mkdocs-toc-md/blob/main/sample/docs/index.md?plain=1)  
+[Site](https://try0.github.io/mkdocs-toc-md/sample/site/)
 
 ## Usage
 
@@ -50,7 +54,7 @@ Renders description after h2 in toc md.
   </div>
   ```
   
-  [sample](https://github.com/try0/mkdocs-toc-md/blob/main/sample/docs/index.md?plain=1#L9)
+  [sample](https://github.com/try0/mkdocs-toc-md/blob/main/sample/docs/index.md?plain=1#L14)
 
 * output_path: str  
 Path to save rendered toc md file.
