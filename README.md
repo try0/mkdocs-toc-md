@@ -16,8 +16,9 @@ mkdocs-toc-md generates a table of contents page. To render as html, the toc md 
     ```yml
     plugins:
       - toc-md:
-          page_title: Contents
-          page_description: Usage mkdocs-toc-md
+          toc_page_title: Contents
+          toc_page_description: Usage mkdocs-toc-md
+          header_level: 3
           pickup_description_meta: true
           pickup_description_class: true
           output_path: index.md
