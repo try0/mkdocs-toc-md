@@ -1,6 +1,6 @@
 # mkdocs-toc-md
 
-mkdocs-toc-md generates a table of contents page. To render as html, the toc md file must be generated before the `mkdocs build`.
+mkdocs-toc-md generates a table of contents as markdown. To render as html, the toc md file must be generated before the `mkdocs build`.
 
 
 
@@ -39,6 +39,10 @@ h1 text in toc md.
 
 * page_description: str  
 Renders description after h1.
+
+* header_level: int  
+Header level (depth) to render.  
+h1→1, h2→2, ...
 
 * pickup_description_meta: bool  
 Renders description after h2 in toc md.
