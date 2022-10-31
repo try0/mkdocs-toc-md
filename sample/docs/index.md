@@ -6,8 +6,7 @@
 
 # Contents
 
-**Using [custom template](https://github.com/try0/mkdocs-toc-md/blob/main/sample/custom_template/toc.md.j2)
-!**  
+**Using [custom template](https://github.com/try0/mkdocs-toc-md/blob/main/sample/custom_template/toc.md.j2)!**  
 
 Usage mkdocs-toc-md
 ## [mkdocs-toc-md](mkdocs-toc-md.md#mkdocs-toc-md)
