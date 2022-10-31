@@ -10,7 +10,10 @@ mkdocs-toc-md generates a table of contents as markdown. To render as html, the 
 [Site](https://try0.github.io/mkdocs-toc-md/sample/site/)
 
 ## Usage
-
+1. Install plugin.
+    ```
+    pip install mkdocs-toc-md
+    ```
 1. Add plugin conifg to mkdocs.yml.
 
     ```yml
