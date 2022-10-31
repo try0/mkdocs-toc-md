@@ -4,51 +4,64 @@ import re
 from mkdocs.plugins import BasePlugin
 from mkdocs.config import config_options
 from bs4 import BeautifulSoup
-
 from jinja2 import Environment, FileSystemLoader
 
 logging.getLogger(__name__)
 
 
-class TocData:
-    level = 1
+class TocPageData:
+    """ Page params """
+    toc_output_comment = None
+    page_title = None
+    page_description = None
+    toc_headers = []
+
+class TocItem:
+    """ headers """
+    src_level = 1
     text  = None
     description = None
-    link = None
+    url = None
+    parent = None
+    children = []
+
 
     def get_md_header_prefix(self):
-        """ Gets level as markdown header.
-
-        """
+        """ Gets level as markdown header. """
 
         prefix = '#'
-        for num in range(self.level):
+        for num in range(self.src_level):
             prefix += '#'
         return prefix
 
-    def get_md_header(self):
-        """ Gets text as markdown header.
 
-        """
+    def get_text_as_md_header(self):
+        """ Gets text as markdown header. """
 
         prefix = self.get_md_header_prefix()
 
-        if self.link:
-            return prefix + ' [' + self.text + '](' + self.link + ')'
+        if self.url:
+            return prefix + ' [' + self.text + '](' + self.url + ')'
 
         return prefix + ' ' + self.text
         
-        
 
-    def get_md_ul_item(self):
-        """ Gets text as markdown list item.
+    def get_text_as_md_ul_item(self):
+        """ Gets text as markdown list item. """
 
-        """
-
-        if self.link:
-            return '* [' + self.text + '](' + self.link + ')'
+        if self.url:
+            return '* [' + self.text + '](' + self.url + ')'
         
         return '* ' + self.text
+
+
+    def get_text_as_md_ol_item(self):
+        """ Gets text as markdown ordered list item. """
+
+        if self.url:
+            return '1. [' + self.text + '](' + self.url + ')'
+        
+        return '1. ' + self.text
 
     def has_description(self):
         return self.description is not None 
@@ -60,12 +73,13 @@ class TocMdPlugin(BasePlugin):
     config_scheme = (
         ('pickup_description_meta', config_options.Type(bool, default=False)),
         ('pickup_description_class', config_options.Type(bool, default=False)),
-        ('output_path', config_options.Type(str, default='')),
+        ('output_path', config_options.Type(str, default='index.md')),
         ('output_log', config_options.Type(bool, default=False)),
         ('ignore_page_pattern', config_options.Type(str, default='')),
         ('remove_navigation_page_pattern', config_options.Type(str, default='')),
-        ('page_title', config_options.Type(str, default='Contents')),
-        ('page_description', config_options.Type(str, default=None)),
+        ('toc_page_title', config_options.Type(str, default='Contents')),
+        ('toc_page_description', config_options.Type(str, default=None)),
+        ('header_level', config_options.Type(int, default=3)),
         ('template_dir_path', config_options.Type(str, default=None)),
     )
 
@@ -84,7 +98,7 @@ class TocMdPlugin(BasePlugin):
 
 
     def on_pre_build(self, config):
-        self.logger.info("Enabled Generate toc-md")
+        self.logger.info("Enabled toc-md plugin")
 
     def on_nav(self, nav, config, files):
         # keep navigations
@@ -96,7 +110,7 @@ class TocMdPlugin(BasePlugin):
         # remove navigation items
         remove_navigation_page_pattern = re.compile(self.config['remove_navigation_page_pattern'])
         if remove_navigation_page_pattern.match(page.file.src_path):
-            self.logger.info("Remove toc")
+            self.logger.info("toc-md: Remove toc")
 
             soup = BeautifulSoup(output_content, 'html5lib')
             for nav_elm in soup.find_all("nav", {"class": "md-nav md-nav--secondary"}):
@@ -110,11 +124,16 @@ class TocMdPlugin(BasePlugin):
 
     def on_post_build(self, config):
 
-
         ignore_file_pattern = re.compile(self.config['ignore_page_pattern'])
 
-        toc_headers = []
+        header_names = []
+        for level in range(self.config['header_level']):
+            header_names.append('h' + str(level + 1))
+
+        self.logger.info('toc-md: Lookup ' + ', '.join(header_names))
+
         # Pickup headers
+        toc_headers = []
         for page in self.nav.pages:
 
             if 'output_path' in self.config:
@@ -128,6 +147,7 @@ class TocMdPlugin(BasePlugin):
 
             soup = BeautifulSoup(page.content, 'html5lib')
 
+            # extract page description
             toc_description = ''
             if 'pickup_description_meta' in self.config:
                 if self.config['pickup_description_meta']:
@@ -141,36 +161,36 @@ class TocMdPlugin(BasePlugin):
                     if description_elm is not None:
                         toc_description += description_elm.text
 
-            # create template params
-            article_headers = soup.find_all(['h1', 'h2', 'h3'])
+            # create TocItem
+            article_headers = soup.find_all(header_names)
             for h in article_headers:
 
-                toc_header = TocData()
+                toc_header = TocItem()
                 if h.find('a', attrs={'class', 'headerlink'}):
                      h.a.extract()
 
                 toc_header.text = h.text
-                toc_header.link = page.file.src_path + '#' + h.get('id')
+                toc_header.url = page.file.src_path + '#' + h.get('id')
 
                 if h.name == 'h1':
-                    toc_header.level = 1
+                    toc_header.src_level = 1
                     if toc_description:
                         toc_header.description = toc_description
                 elif h.name == 'h2':
-                    toc_header.level = 2
+                    toc_header.src_level = 2
                 elif h.name == 'h3' :
-                    toc_header.level = 3
+                    toc_header.src_level = 3
                 elif h.name == 'h4' :
-                    toc_header.level = 4
+                    toc_header.src_level = 4
                 elif h.name == 'h5' :
-                    toc_header.level = 5
+                    toc_header.src_level = 5
                 elif h.name == 'h6' :
-                    toc_header.level = 6
+                    toc_header.src_level = 6
 
                 toc_headers.append(toc_header)
 
 
-        # render contents
+
         base_path = os.path.abspath(os.path.dirname(__file__))
         template_path = [os.path.join(base_path, 'template')]
 
@@ -178,25 +198,30 @@ class TocMdPlugin(BasePlugin):
         if 'template_dir_path' in self.config:
             if self.config['template_dir_path'] and os.path.exists(self.config['template_dir_path']):
                 template_path = self.config['template_dir_path']
-                self.logger.info("Use custom template")
+                self.logger.info("toc-md: Use custom template")
 
+
+        # create template arg
+        template_param = TocPageData()
+        template_param.page_title = self.config['toc_page_title']
+        template_param.page_description = self.config['toc_page_description']
+        template_param.toc_headers = toc_headers
+        template_param.toc_output_comment = self.toc_output_comment
+
+        # render contents
         jinja_env = Environment(
             loader = FileSystemLoader(template_path),
             trim_blocks = True
         )
-
         template = jinja_env.get_template('toc.md.j2')
-        toc_output = template.render(
-            page_title = self.config['page_title'],
-            page_description = self.config['page_description'],
-            toc_headers = toc_headers,
-            toc_output_comment = self.toc_output_comment)
+        toc_output = template.render(data = template_param)
 
         # print to console
         if 'output_log' in self.config:
             if self.config['output_log']:
                 print(toc_output)
 
+        # save file
         if 'output_path' in self.config:
             output_path = self.config['output_path']
             if output_path:
@@ -208,9 +233,8 @@ class TocMdPlugin(BasePlugin):
                      with open(abs_md_path, 'r', encoding='utf-8') as file:
                         old_content = file.read()
                         if old_content == toc_output:
+                            self.logger.info(f'toc-md: No changes')
                             return
-
-                self.logger.info(f'Output a toc markdown file to "{abs_md_path}".')
 
                 mode = 'x'
                 if os.path.isfile(abs_md_path):
@@ -218,6 +242,9 @@ class TocMdPlugin(BasePlugin):
                 
                 with open(abs_md_path, mode, encoding='utf-8') as file:
                     file.write(toc_output)
+                
+                self.logger.info(f'toc-md: Output a toc markdown file to "{abs_md_path}".')
+
 
 
 

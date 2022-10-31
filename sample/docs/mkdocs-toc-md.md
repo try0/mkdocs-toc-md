@@ -8,10 +8,10 @@ mkdocs-toc-md generates a table of contents page.
 
 
 
-### page_title: str  
+### toc_page_title: str  
 h1 text in toc md.
 
-### page_description: str
+### toc_page_description: str
 Renders description after h1.
 
 ### pickup_description_meta: bool  

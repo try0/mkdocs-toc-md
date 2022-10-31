@@ -5,8 +5,9 @@
 
 
 # Contents
-**Using custom template!**
 
+**Using [custom template](https://github.com/try0/mkdocs-toc-md/blob/main/sample/custom_template/toc.md.j2)
+!**  
 
 Usage mkdocs-toc-md
 ## [mkdocs-toc-md](mkdocs-toc-md.md#mkdocs-toc-md)
@@ -14,8 +15,8 @@ Usage mkdocs-toc-md
 mkdocs-toc-md generates a table of contents page.
 
 ### [Options](mkdocs-toc-md.md#options)
-* [page_title: str](mkdocs-toc-md.md#page_title-str)
-* [page_description: str](mkdocs-toc-md.md#page_description-str)
+* [toc_page_title: str](mkdocs-toc-md.md#toc_page_title-str)
+* [toc_page_description: str](mkdocs-toc-md.md#toc_page_description-str)
 * [pickup_description_meta: bool](mkdocs-toc-md.md#pickup_description_meta-bool)
 * [pickup_description_class: bool](mkdocs-toc-md.md#pickup_description_class-bool)
 * [output_path: str](mkdocs-toc-md.md#output_path-str)
@@ -27,13 +28,16 @@ mkdocs-toc-md generates a table of contents page.
 * [mkdocs.yml](mkdocs-toc-md.md#mkdocsyml)
 ## [nestmd](nestfolder\nest.md#nestmd)
 ### [Level2 header1](nestfolder\nest.md#level2-header1)
-* [level3 article1](nestfolder\nest.md#level3-article1)
-* [level3 article2](nestfolder\nest.md#level3-article2)
-* [level3 article3](nestfolder\nest.md#level3-article3)
+* [level3 header1](nestfolder\nest.md#level3-header1)
+* [level4 header](nestfolder\nest.md#level4-header)
+* [level5 header](nestfolder\nest.md#level5-header)
+* [level6 header](nestfolder\nest.md#level6-header)
+* [level3 header2](nestfolder\nest.md#level3-header2)
+* [level3 header3](nestfolder\nest.md#level3-header3)
 ### [Level2 header2](nestfolder\nest.md#level2-header2)
-* [level3 article1](nestfolder\nest.md#level3-article1_1)
-* [level3 article2](nestfolder\nest.md#level3-article2_1)
-* [level3 article3](nestfolder\nest.md#level3-article3_1)
+* [level3 header1](nestfolder\nest.md#level3-header1_1)
+* [level3 header2](nestfolder\nest.md#level3-header2_1)
+* [level3 header3](nestfolder\nest.md#level3-header3_1)
 
 
 ---

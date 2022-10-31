@@ -1,21 +1,22 @@
-{{toc_output_comment}}
+{{data.toc_output_comment}}
 
-# {{page_title}}
-**Using custom template!**
+# {{data.page_title}}
 
+**Using [custom template](https://github.com/try0/mkdocs-toc-md/blob/main/sample/custom_template/toc.md.j2)
+!**  
 
-{% if page_description %}
-{{page_description}}
-{% endif%}
-{% for header in toc_headers %}
-{% if header.level < 3 %}
-{{header.get_md_header()}}
+{% if data.page_description %}
+{{data.page_description}}
+{% endif %}
+{% for header in data.toc_headers: %}
+{% if header.src_level < 3 %}
+{{header.get_text_as_md_header()}}
 {% else %}
-{{header.get_md_ul_item()}}
-{% endif%}
+{{header.get_text_as_md_ul_item()}}
+{% endif %}
 {% if header.has_description() %}
 {{header.description}}
-{% endif%}
+{% endif %}
 {% endfor %}
 
 

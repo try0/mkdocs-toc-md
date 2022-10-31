@@ -11,12 +11,13 @@ theme:
 
 plugins:
   - toc-md:
-      page_title: Contents
-      page_description: Usage mkdocs-toc-md
+      toc_page_title: Contents
+      toc_page_description: Usage mkdocs-toc-md
+      header_level: 6
       pickup_description_meta: true
       pickup_description_class: true
       output_path: index.md
-      output_log: true
+      output_log: false
       ignore_page_pattern: index.md
       remove_navigation_page_pattern: index.md
       template_dir_path: custom_template
