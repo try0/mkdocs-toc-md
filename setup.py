@@ -2,9 +2,12 @@ import io
 from setuptools import setup
 
 # python setup.py develop
+# python setup.py sdist bdist_wheel
+# twine check dist/mkdocs-toc-md-x.x.x.tar.gz
+# twine upload --repository pypi dist/*
 setup(
     name='mkdocs-toc-md',
-    version='0.0.1',
+    version='0.0.2',
     description='Generate a toc markdown file',
     long_description=io.open('README.md', encoding='utf8').read(),
     long_description_content_type='text/markdown',
@@ -28,6 +31,7 @@ setup(
     ],
     python_requires='>=3.6',
     packages=['mkdocs_toc_md'],
+    include_package_data=True,
     entry_points={
         'mkdocs.plugins': [
             'toc-md = mkdocs_toc_md.plugin:TocMdPlugin',
