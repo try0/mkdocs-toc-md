@@ -161,6 +161,9 @@ class TocMdPlugin(BasePlugin):
                     if description_elm is not None:
                         toc_description += description_elm.text
 
+            if 'toc_md_description' in page.meta:
+                toc_description += page.meta['toc_md_description']
+
             # create TocItem
             article_headers = soup.find_all(header_names)
             for h in article_headers:
