@@ -45,7 +45,7 @@ mkdocs-toc-md is a mkdocs plugin that generates a table of contents as markdown.
 
 
 ### Adds description.
-If you use metadata (front matter), set the value to toc_md_description as a key.
+If you use metadata (front matter), set the value with toc_md_description as a key.
 ```
 ---
 toc_md_description: pickup target value
