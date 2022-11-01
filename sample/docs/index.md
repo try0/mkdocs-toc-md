@@ -10,12 +10,15 @@
 
 Usage mkdocs-toc-md
 ## [mkdocs-toc-md](mkdocs-toc-md.md#mkdocs-toc-md)
-
-mkdocs-toc-md generates a table of contents page.
-
+Describes how to use mkdocs-toc-md plugin.
+### [Sample](mkdocs-toc-md.md#sample)
+### [Usage](mkdocs-toc-md.md#usage)
+* [Generates toc markdown file.](mkdocs-toc-md.md#generates-toc-markdown-file)
+* [Adds description.](mkdocs-toc-md.md#adds-description)
 ### [Options](mkdocs-toc-md.md#options)
 * [toc_page_title: str](mkdocs-toc-md.md#toc_page_title-str)
 * [toc_page_description: str](mkdocs-toc-md.md#toc_page_description-str)
+* [header_level: int](mkdocs-toc-md.md#header_level-int)
 * [pickup_description_meta: bool](mkdocs-toc-md.md#pickup_description_meta-bool)
 * [pickup_description_class: bool](mkdocs-toc-md.md#pickup_description_class-bool)
 * [output_path: str](mkdocs-toc-md.md#output_path-str)
@@ -23,8 +26,6 @@ mkdocs-toc-md generates a table of contents page.
 * [ignore_page_pattern: str](mkdocs-toc-md.md#ignore_page_pattern-str)
 * [remove_navigation_page_pattern: str](mkdocs-toc-md.md#remove_navigation_page_pattern-str)
 * [template_dir_path: str](mkdocs-toc-md.md#template_dir_path-str)
-### [Sample](mkdocs-toc-md.md#sample)
-* [mkdocs.yml](mkdocs-toc-md.md#mkdocsyml)
 ## [nestmd](nestfolder\nest.md#nestmd)
 ### [Level2 header1](nestfolder\nest.md#level2-header1)
 * [level3 header1](nestfolder\nest.md#level3-header1)
