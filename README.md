@@ -1,6 +1,6 @@
 # mkdocs-toc-md
 
-mkdocs-toc-md generates a table of contents as markdown. To render as html, the toc md file must be generated before the `mkdocs build`.
+mkdocs-toc-md is a mkdocs plugin that generates a table of contents as markdown. To render as html, the toc md file must be generated before the `mkdocs build`.
 
 
 
