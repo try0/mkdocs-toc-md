@@ -37,10 +37,10 @@ mkdocs-toc-md is a mkdocs plugin that generates a table of contents as markdown.
 
 ## Options
 
-* page_title: str  
+* toc_page_title: str  
 h1 text in toc md.
 
-* page_description: str  
+* toc_page_description: str  
 Renders description after h1.
 
 * header_level: int  
@@ -65,7 +65,8 @@ Renders description after h2 in toc md.
   [sample](https://github.com/try0/mkdocs-toc-md/blob/main/sample/docs/index.md?plain=1#L14)
 
 * output_path: str  
-Path to save rendered toc md file.
+Path to save rendered toc md file.  
+index.md → docs/index.md
 
 * output_log: bool  
 Output toc md contents to console.
