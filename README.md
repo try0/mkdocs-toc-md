@@ -27,20 +27,12 @@
 
     ```yml
     plugins:
-      - toc-md:
-          toc_page_title: Contents
-          toc_page_description: Usage mkdocs-toc-md
-          header_level: 3
-          pickup_description_meta: false
-          pickup_description_class: false
-          output_path: index.md
-          output_log: true
-          ignore_page_pattern: index.md
-          remove_navigation_page_pattern: index.md
-          template_dir_path: custom_template
+      - toc-md
     ```
 
 1. Run `mkdocs serve` to output toc md file.
+
+1. Check docs/index.md.
 
 
 ### Adds description.
@@ -56,6 +48,21 @@ or use options `pickup_description_meta` `pickup_description_class`.
 
 
 ## Options
+
+```yml
+plugins:
+    - toc-md:
+        toc_page_title: Contents
+        toc_page_description: Usage mkdocs-toc-md
+        header_level: 3
+        pickup_description_meta: false
+        pickup_description_class: false
+        output_path: index.md
+        output_log: true
+        ignore_page_pattern: index.md
+        remove_navigation_page_pattern: index.md
+        template_dir_path: custom_template
+```
 
 ### toc_page_title: str  
 h1 text in toc md.
