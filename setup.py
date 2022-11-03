@@ -7,11 +7,11 @@ from setuptools import setup
 # twine upload --repository pypi dist/*
 setup(
     name='mkdocs-toc-md',
-    version='0.0.3',
-    description='Generate a toc markdown file',
+    version='0.0.4',
+    description='Generate a table of contents markdown file',
     long_description=io.open('README.md', encoding='utf8').read(),
     long_description_content_type='text/markdown',
-    keywords='mkdocs plugin toc',
+    keywords='mkdocs plugin toc generator',
     author='Ryo Tsunoda',
     author_email='try0.development@gmail.com',
     url='https://github.com/try0/mkdocs-toc-md',
