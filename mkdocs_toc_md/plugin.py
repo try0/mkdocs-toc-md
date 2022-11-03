@@ -112,23 +112,28 @@ class TocMdPlugin(BasePlugin):
     def on_post_page(self, output_content, page, config):
         
         # remove navigation items
-        remove_navigation_page_pattern = re.compile(self.config['remove_navigation_page_pattern'])
-        if remove_navigation_page_pattern.match(page.file.src_path):
-            self.logger.info("toc-md: Remove toc")
+        pattern = self.config['remove_navigation_page_pattern']
+        if pattern:
+            remove_navigation_page_re = re.compile(pattern)
+            if remove_navigation_page_re.match(page.file.src_path):
+                self.logger.info("toc-md: Remove toc")
 
-            soup = BeautifulSoup(output_content, 'html5lib')
-            for nav_elm in soup.find_all("nav", {"class": "md-nav md-nav--secondary"}):
-                nav_elm.decompose()
-    
-            souped_html = soup.prettify(soup.original_encoding)
-            return souped_html 
+                soup = BeautifulSoup(output_content, 'html5lib')
+                for nav_elm in soup.find_all("nav", {"class": "md-nav md-nav--secondary"}):
+                    nav_elm.decompose()
+        
+                souped_html = soup.prettify(soup.original_encoding)
+                return souped_html 
 
         return output_content
         
 
     def on_post_build(self, config):
 
-        ignore_file_pattern = re.compile(self.config['ignore_page_pattern'])
+        ignore_file_pattern = self.config['ignore_page_pattern']
+        ignore_re = None
+        if ignore_file_pattern:
+            ignore_re = re.compile(ignore_file_pattern)
 
         header_names = []
         for level in range(self.config['header_level']):
@@ -145,7 +150,7 @@ class TocMdPlugin(BasePlugin):
                 if page.file.src_path == output_path:
                     continue
 
-            ignore = ignore_file_pattern.match(page.file.src_path)
+            ignore = ignore_re and ignore_re.match(page.file.src_path)
             if ignore:
                 continue
 
