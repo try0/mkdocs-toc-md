@@ -1,9 +1,11 @@
 
 # mkdocs-toc-md
 
-mkdocs-toc-md is a mkdocs plugin that generates a table of contents as markdown. To render as html, the toc md file must be generated before the `mkdocs build`.
+[mkdocs-toc-md](https://pypi.org/project/mkdocs-toc-md/) is an mkdocs plugin that generates a table of contents as markdown. To render as html, the toc md file must be generated before the `mkdocs build`.
 
-[PyPI](https://pypi.org/project/mkdocs-toc-md/)
+![](https://user-images.githubusercontent.com/17096601/199638378-892ddec9-b7af-4eb8-8ca8-a57c02980f53.png)
+
+
 
 ## Sample
 
