@@ -258,7 +258,7 @@ class TocMdPlugin(BasePlugin):
                 self.logger.info(f'toc-md: Output a toc markdown file to "{abs_md_path}".')
 
                 if self.is_build_command:
-                    self.logger.warn('toc-md: Command line contains [build]. You may need to build again to render toc md as html.')
+                    self.logger.warning('toc-md: Command line contains [build]. You may need to build again to render toc md as html.')
 
 
 
