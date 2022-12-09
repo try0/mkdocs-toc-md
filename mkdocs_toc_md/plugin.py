@@ -27,7 +27,7 @@ class TocItem:
     children = []
 
 
-    def get_md_header_prefix(self):
+    def get_md_header_prefix(self) -> str:
         """ Gets level as markdown header. """
 
         prefix = '#'
@@ -36,7 +36,7 @@ class TocItem:
         return prefix
 
 
-    def get_text_as_md_header(self):
+    def get_text_as_md_header(self) -> str:
         """ Gets text as markdown header. """
 
         prefix = self.get_md_header_prefix()
@@ -47,7 +47,7 @@ class TocItem:
         return prefix + ' ' + self.text
         
 
-    def get_text_as_md_ul_item(self):
+    def get_text_as_md_ul_item(self) -> str:
         """ Gets text as markdown list item. """
 
         if self.url:
@@ -56,7 +56,7 @@ class TocItem:
         return '* ' + self.text
 
 
-    def get_text_as_md_ol_item(self):
+    def get_text_as_md_ol_item(self) -> str:
         """ Gets text as markdown ordered list item. """
 
         if self.url:
@@ -64,7 +64,7 @@ class TocItem:
         
         return '1. ' + self.text
 
-    def has_description(self):
+    def has_description(self) -> bool:
         return self.description is not None 
 
 
