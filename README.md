@@ -1,7 +1,7 @@
 
 # mkdocs-toc-md
 
-[mkdocs-toc-md](https://pypi.org/project/mkdocs-toc-md/) is an mkdocs plugin that generates a table of contents as markdown. To render as html, the toc md file must be generated before the `mkdocs build`.
+[mkdocs-toc-md](https://pypi.org/project/mkdocs-toc-md/) is a plugin for mkdocs that generates a table of contents in markdown format. To render the table of contents as HTML, the markdown file must be generated before running `mkdocs build`.
 
 ![](https://user-images.githubusercontent.com/17096601/199638378-892ddec9-b7af-4eb8-8ca8-a57c02980f53.png)
 
@@ -23,14 +23,14 @@
     ```
     pip install mkdocs-toc-md
     ```
-1. Add plugin conifg to mkdocs.yml.
+1. Add plugin config to mkdocs.yml.
 
     ```yml
     plugins:
       - toc-md
     ```
 
-1. Run `mkdocs serve` to output toc md file.
+1. Run `mkdocs serve` to output the toc md file.
 
 1. Check docs/index.md.
 
@@ -65,23 +65,23 @@ plugins:
 ```
 
 ### toc_page_title: str  
-h1 text in toc md.
+h1 text in the table of contents markdown file.
 
 ### toc_page_description: str
-Renders description after h1.
+The description will be rendered below the h1 tag in the table of contents.
 
 ### header_level: int  
 Header level (depth) to render.  
 h1→1, h2→2, ...
 
 ### pickup_description_meta: bool  
-Renders description after h2 in toc md. If you use metadata (front matter), no need set this option.
+The plugin renders the description after the h2 header in the table of contents markdown file. If you use metadata (front matter), there is no need to set this option.
 ```html
 <mata name="description" content="pickup target value" />
 ```
 
 ### pickup_description_class: bool  
-Renders description after h2 in toc md. If you use metadata (front matter), no need set this option.
+The plugin renders the description after the h2 header in the table of contents markdown file. If you use metadata (front matter), there is no need to set this option.
 
 ```md
 # mkdocs-toc-md
@@ -96,18 +96,20 @@ Path to save rendered toc md file.
 index.md → docs/index.md
 
 ### output_log: bool  
-Output toc md contents to console.
+Output contents of markdown file to console.
 
 ### ignore_page_pattern: str  
-Regular expression pattern of md filenames to be excluded from toc md files.  
+Regular expression pattern of markdown file names to be excluded from toc markdown file.  
 To prevent the table of contents page from listing itself, set the same value as the output file name (output_path).
 
 ### remove_navigation_page_pattern: str  
-Regular expression pattern of md filenames to remove navigation items.  
+Regular expression pattern of markdown file names to remove navigation items.  
 To hide the navigation on the table of contents page, set the same value as the output file name (output_path).
 
 ### template_dir_path: str
 Path of template dir.
 Put `toc.md.j2` in your custom template dir.
 
-
+### beautiful_soup_parser: str
+Parser used in BeautifulSoup. Default is html.parser.  
+If using html5lib or lxml, you need to install additional dependencies.

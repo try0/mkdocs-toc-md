@@ -82,6 +82,7 @@ class TocMdPlugin(BasePlugin):
         ('toc_page_description', config_options.Type(str, default=None)),
         ('header_level', config_options.Type(int, default=3)),
         ('template_dir_path', config_options.Type(str, default=None)),
+        ('beautiful_soup_parser', config_options.Type(str, default='html.parser')),
     )
 
 
@@ -118,7 +119,7 @@ class TocMdPlugin(BasePlugin):
             if remove_navigation_page_re.match(page.file.src_path):
                 self.logger.info("toc-md: Remove toc")
 
-                soup = BeautifulSoup(output_content, 'html5lib')
+                soup = BeautifulSoup(output_content, self.config['beautiful_soup_parser'])
                 for nav_elm in soup.find_all("nav", {"class": "md-nav md-nav--secondary"}):
                     nav_elm.decompose()
         
@@ -154,7 +155,7 @@ class TocMdPlugin(BasePlugin):
             if ignore:
                 continue
 
-            soup = BeautifulSoup(page.content, 'html5lib')
+            soup = BeautifulSoup(page.content, self.config['beautiful_soup_parser'])
 
             # extract page description
             toc_description = ''
