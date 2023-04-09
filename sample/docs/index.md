@@ -9,8 +9,10 @@
 **Using [custom template](https://github.com/try0/mkdocs-toc-md/blob/main/sample/custom_template/toc.md.j2)!**  
 
 Usage mkdocs-toc-md
+
 ## [mkdocs-toc-md](mkdocs-toc-md.md#mkdocs-toc-md)
 Describes how to use mkdocs-toc-md plugin.
+
 ### [Sample](mkdocs-toc-md.md#sample)
 ### [Usage](mkdocs-toc-md.md#usage)
 * [Generates toc markdown file.](mkdocs-toc-md.md#generates-toc-markdown-file)
