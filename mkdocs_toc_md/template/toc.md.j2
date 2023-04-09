@@ -4,6 +4,7 @@
 {% if data.page_description %}
 {{data.page_description}}
 {% endif %}
+
 {% for header in data.toc_headers: %}
 {% if header.src_level < 3 %}
 {{header.get_text_as_md_header()}}
@@ -12,6 +13,6 @@
 {% endif %}
 {% if header.has_description() %}
 {{header.description}}
+
 {% endif %}
 {% endfor %}
-
