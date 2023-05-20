@@ -4,10 +4,13 @@ nav:
   - "mkdocs-toc-md.md"
   - nest.md: "nestfolder/nest.md"
 use_directory_urls: false
-
+repo_url: https://github.com/try0/mkdocs-toc-md
+repo_name: mkdocs-toc-md
 theme:
   name: material
-  language: en
+  language: en  
+  icon:
+    repo: fontawesome/brands/github
 
 plugins:
   - toc-md:
