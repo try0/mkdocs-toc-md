@@ -113,3 +113,20 @@ Put `toc.md.j2` in your custom template dir.
 ### beautiful_soup_parser: str
 Parser used in BeautifulSoup. Default is html.parser.  
 If using html5lib or lxml, you need to install additional dependencies.
+
+### integrate_mkdocs_static_i18n: bool
+With [mkdocs-static-i18n](https://github.com/ultrabug/mkdocs-static-i18n)
+
+### languages: dict
+Use with integrate_mkdocs_static_i18n option.
+Set toc_page_title, toc_page_description for each language.
+
+```yml
+languages:
+    en:
+        toc_page_title: Contents
+        toc_page_description: Usage mkdocs-toc-md
+    ja:
+        toc_page_title: 目次
+        toc_page_description: mkdocs-toc-mdプラグインの使い方
+```
