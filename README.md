@@ -9,7 +9,7 @@
 
 ## Sample
 
-[File](https://github.com/try0/mkdocs-toc-md/blob/main/sample/docs/index.md?plain=1)  
+[File](https://github.com/try0/mkdocs-toc-md/blob/main/sample/docs/index.en.md?plain=1)  
 [Site](https://try0.github.io/mkdocs-toc-md/sample/site/)
 
 
