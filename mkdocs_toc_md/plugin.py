@@ -2,10 +2,15 @@ import sys
 import logging
 import os
 import re
+from mkdocs import plugins
 from mkdocs.plugins import BasePlugin
 from mkdocs.config import config_options
 from bs4 import BeautifulSoup
 from jinja2 import Environment, FileSystemLoader
+try:
+    from mkdocs.plugins import event_priority
+except ImportError:
+    event_priority = lambda priority: lambda f: f  # No-op fallback
 
 logging.getLogger(__name__)
 
@@ -83,6 +88,8 @@ class TocMdPlugin(BasePlugin):
         ('header_level', config_options.Type(int, default=3)),
         ('template_dir_path', config_options.Type(str, default=None)),
         ('beautiful_soup_parser', config_options.Type(str, default='html.parser')),
+        ('languages', config_options.Type(dict, default=dict())),
+        ('integrate_mkdocs_static_i18n', config_options.Type(bool, default=False)),
     )
 
 
@@ -108,10 +115,14 @@ class TocMdPlugin(BasePlugin):
     def on_nav(self, nav, config, files):
         # keep navigations
         self.nav = nav
+      
+        # mkdocs-static-i18n
+        self.i18n_plugin = None
+        if self.config['integrate_mkdocs_static_i18n'] and 'i18n' in config['plugins']:
+            self.i18n_plugin = config['plugins']['i18n']
 
 
     def on_post_page(self, output_content, page, config):
-        
         # remove navigation items
         pattern = self.config['remove_navigation_page_pattern']
         if pattern:
@@ -127,31 +138,52 @@ class TocMdPlugin(BasePlugin):
                 return souped_html 
 
         return output_content
-        
+    
 
+    @plugins.event_priority(-100) 
     def on_post_build(self, config):
 
         ignore_file_pattern = self.config['ignore_page_pattern']
-        ignore_re = None
+        self.ignore_re = None
         if ignore_file_pattern:
-            ignore_re = re.compile(ignore_file_pattern)
+            self.ignore_re = re.compile(ignore_file_pattern)
 
-        header_names = []
+        self.header_names = []
         for level in range(self.config['header_level']):
-            header_names.append('h' + str(level + 1))
+            self.header_names.append('h' + str(level + 1))
 
-        self.logger.info('toc-md: Lookup ' + ', '.join(header_names))
+        self.logger.info('toc-md: Lookup ' + ', '.join(self.header_names))
+
+
+        if self.i18n_plugin:
+            # mkdocs-static-i18n
+            # https://github.com/ultrabug/mkdocs-static-i18n
+
+            for lang in self.i18n_plugin.i18n_navs:
+                use_folder = 'folder' == self.i18n_plugin.config['docs_structure']
+                nav = self.i18n_plugin.i18n_navs[lang]
+                if use_folder:
+                    self.output(config, nav, "", lang)
+                else:
+                    self.output(config, nav, lang, "")
+
+        else:
+            # default
+
+            self.output(config, self.nav, "", "")
+
+
+    def output(self, config, nav, lang, folder):
 
         # Pickup headers
         toc_headers = []
-        for page in self.nav.pages:
-
+        for page in nav.pages:
             if 'output_path' in self.config:
                 output_path = self.config['output_path']
                 if page.file.src_path == output_path:
                     continue
 
-            ignore = ignore_re and ignore_re.match(page.file.src_path)
+            ignore = self.ignore_re and self.ignore_re.match(page.file.src_path)
             if ignore:
                 continue
 
@@ -175,7 +207,7 @@ class TocMdPlugin(BasePlugin):
                 toc_description += page.meta['toc_md_description']
 
             # create TocItem
-            article_headers = soup.find_all(header_names)
+            article_headers = soup.find_all(self.header_names)
             for h in article_headers:
 
                 toc_header = TocItem()
@@ -202,8 +234,27 @@ class TocMdPlugin(BasePlugin):
 
                 toc_headers.append(toc_header)
 
+        # create template arg
+        template_param = TocPageData()
+        template_param.page_title = self.config['toc_page_title']
+        if lang in self.config['languages']:
+            if 'toc_page_title' in self.config['languages'][lang]:
+                template_param.page_title = self.config['languages'][lang]['toc_page_title']
+
+        template_param.page_description = self.config['toc_page_description']
+        if lang in self.config['languages']:
+            if 'toc_page_description' in self.config['languages'][lang]:
+                template_param.page_description = self.config['languages'][lang]['toc_page_description']
+
+        template_param.toc_headers = toc_headers
+        template_param.toc_output_comment = self.toc_output_comment
+
+        self.output_md_file(config, template_param, lang, folder)
 
 
+    def output_md_file(self, config, template_param, file_suffix, append_folder):
+        """ Outputs markdown file. """
+        
         base_path = os.path.abspath(os.path.dirname(__file__))
         template_path = [os.path.join(base_path, 'template')]
 
@@ -212,14 +263,6 @@ class TocMdPlugin(BasePlugin):
             if self.config['template_dir_path'] and os.path.exists(self.config['template_dir_path']):
                 template_path = self.config['template_dir_path']
                 self.logger.info("toc-md: Use custom template")
-
-
-        # create template arg
-        template_param = TocPageData()
-        template_param.page_title = self.config['toc_page_title']
-        template_param.page_description = self.config['toc_page_description']
-        template_param.toc_headers = toc_headers
-        template_param.toc_output_comment = self.toc_output_comment
 
         # render contents
         jinja_env = Environment(
@@ -237,8 +280,11 @@ class TocMdPlugin(BasePlugin):
         # save file
         if 'output_path' in self.config:
             output_path = self.config['output_path']
+            if file_suffix:
+                output_path = re.sub('md$', file_suffix + '.md', output_path)
+
             if output_path:
-                abs_md_path = os.path.join(config['docs_dir'], output_path)
+                abs_md_path = os.path.join(config['docs_dir'], append_folder, output_path)
                 os.makedirs(os.path.dirname(abs_md_path), exist_ok=True)
 
                  # avoid infinite loop
@@ -260,8 +306,4 @@ class TocMdPlugin(BasePlugin):
 
                 if self.is_build_command:
                     self.logger.warning('toc-md: Command line contains [build]. You may need to build again to render toc md as html.')
-
-
-
-
 
