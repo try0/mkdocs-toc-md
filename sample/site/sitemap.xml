@@ -1,18 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
     <url>
-         <loc>None</loc>
-         <lastmod>2023-04-09</lastmod>
+         <loc>Noneindex.html</loc>
+         <lastmod>2023-05-20</lastmod>
          <changefreq>daily</changefreq>
+         <xhtml:link rel="alternate" hreflang="en" href="Noneen/index.html"/>
+         <xhtml:link rel="alternate" hreflang="ja" href="Noneja/index.html"/>
+         
     </url>
     <url>
-         <loc>None</loc>
-         <lastmod>2023-04-09</lastmod>
+         <loc>Nonemkdocs-toc-md.html</loc>
+         <lastmod>2023-05-20</lastmod>
          <changefreq>daily</changefreq>
+         <xhtml:link rel="alternate" hreflang="en" href="Noneen/mkdocs-toc-md.html"/>
+         <xhtml:link rel="alternate" hreflang="ja" href="Noneja/mkdocs-toc-md.html"/>
+         
     </url>
     <url>
-         <loc>None</loc>
-         <lastmod>2023-04-09</lastmod>
+         <loc>Nonenestfolder/nest.html</loc>
+         <lastmod>2023-05-20</lastmod>
          <changefreq>daily</changefreq>
+         <xhtml:link rel="alternate" hreflang="en" href="Noneen/nestfolder/nest.html"/>
+         <xhtml:link rel="alternate" hreflang="ja" href="Noneja/nestfolder/nest.html"/>
+         
     </url>
 </urlset>

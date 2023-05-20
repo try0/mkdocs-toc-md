@@ -18,9 +18,26 @@ plugins:
       pickup_description_class: true
       output_path: index.md
       output_log: false
-      ignore_page_pattern: index.md
-      remove_navigation_page_pattern: index.md
+      ignore_page_pattern: index.*.md
+      remove_navigation_page_pattern: index.*.md
       template_dir_path: custom_template
+      integrate_mkdocs_static_i18n: true
+      languages:
+        en:
+          toc_page_title: Contents
+          toc_page_description: Usage mkdocs-toc-md
+        ja:
+          toc_page_title: 目次
+          toc_page_description: mkdocs-toc-mdプラグインの使い方
+  - i18n:
+      default_language: en
+      languages:
+        en:
+          name: English
+          build: true
+        ja:
+          name: Japanese
+          build: true
 
 markdown_extensions:
   - pymdownx.highlight:
