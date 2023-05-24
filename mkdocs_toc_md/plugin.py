@@ -11,6 +11,7 @@ try:
     from mkdocs.plugins import event_priority
 except ImportError:
     event_priority = lambda priority: lambda f: f  # No-op fallback
+from .extends.hook import TocExtendModule
 
 logging.getLogger(__name__)
 
@@ -28,8 +29,8 @@ class TocItem:
     text  = None
     description = None
     url = None
-    parent = None
-    children = []
+    metadata = dict()
+
 
 
     def get_md_header_prefix(self) -> str:
@@ -90,6 +91,7 @@ class TocMdPlugin(BasePlugin):
         ('beautiful_soup_parser', config_options.Type(str, default='html.parser')),
         ('languages', config_options.Type(dict, default=dict())),
         ('integrate_mkdocs_static_i18n', config_options.Type(bool, default=False)),
+        ('extend_module', config_options.Type(bool, default=False)),
     )
 
 
@@ -110,16 +112,22 @@ class TocMdPlugin(BasePlugin):
 
     def on_pre_build(self, config):
         self.logger.info("Enabled toc-md plugin")
-
-
-    def on_nav(self, nav, config, files):
-        # keep navigations
-        self.nav = nav
       
         # mkdocs-static-i18n
         self.i18n_plugin = None
         if self.config['integrate_mkdocs_static_i18n'] and 'i18n' in config['plugins']:
             self.i18n_plugin = config['plugins']['i18n']
+
+        self.hook = TocExtendModule()
+
+
+    def on_serve(self, server, config, builder):
+        TocExtendModule.watch_file(server, builder)
+
+    def on_nav(self, nav, config, files):
+        # keep navigations
+        self.nav = nav
+
 
 
     def on_post_page(self, output_content, page, config):
@@ -207,32 +215,52 @@ class TocMdPlugin(BasePlugin):
                 toc_description += page.meta['toc_md_description']
 
             # create TocItem
-            article_headers = soup.find_all(self.header_names)
-            for h in article_headers:
+            src_elements = []
+            if self.use_extend_module('find_src_elements'):
+                # user impl
+                src_elements = self.hook.find_src_elements(soup, page)
+            else:
+                # default
+                src_elements = soup.find_all(self.header_names)
 
-                toc_header = TocItem()
-                if h.find('a', attrs={'class', 'headerlink'}):
-                     h.a.extract()
+            if self.use_extend_module('create_toc_items'):
+                # user impl
+                items = self.hook.create_toc_items(page, toc_description, src_elements)
+                toc_headers.extend(items)
+            else:
+                # default
+                for elm in src_elements:
 
-                toc_header.text = h.text
-                toc_header.url = page.file.src_path + '#' + h.get('id')
+                    toc_header = TocItem()
+                    if elm.find('a', attrs={'class', 'headerlink'}):
+                        elm.a.extract()
 
-                if h.name == 'h1':
-                    toc_header.src_level = 1
-                    if toc_description:
-                        toc_header.description = toc_description
-                elif h.name == 'h2':
-                    toc_header.src_level = 2
-                elif h.name == 'h3' :
-                    toc_header.src_level = 3
-                elif h.name == 'h4' :
-                    toc_header.src_level = 4
-                elif h.name == 'h5' :
-                    toc_header.src_level = 5
-                elif h.name == 'h6' :
-                    toc_header.src_level = 6
+                    toc_header.text = elm.text
+                    toc_header.url = page.file.src_path + '#' + elm.get('id')
 
-                toc_headers.append(toc_header)
+                    if elm.name == 'h1':
+                        toc_header.src_level = 1
+                        if toc_description:
+                            toc_header.description = toc_description
+                    elif elm.name == 'h2':
+                        toc_header.src_level = 2
+                    elif elm.name == 'h3' :
+                        toc_header.src_level = 3
+                    elif elm.name == 'h4' :
+                        toc_header.src_level = 4
+                    elif elm.name == 'h5' :
+                        toc_header.src_level = 5
+                    elif elm.name == 'h6' :
+                        toc_header.src_level = 6
+
+                    if self.use_extend_module('on_create_toc_item'):
+                        # user hook
+                        self.hook.on_create_toc_item(toc_header, elm, page)
+                    toc_headers.append(toc_header)
+
+        if self.use_extend_module('on_before_output'):
+            # user hook
+            self.hook.on_before_output(nav, toc_headers)
 
         # create template arg
         template_param = TocPageData()
@@ -307,3 +335,5 @@ class TocMdPlugin(BasePlugin):
                 if self.is_build_command:
                     self.logger.warning('toc-md: Command line contains [build]. You may need to build again to render toc md as html.')
 
+    def use_extend_module(self, name) -> bool:
+        return 'extend_module' in self.config and self.config['extend_module'] and self.hook.can_call(name) 
