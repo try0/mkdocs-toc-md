@@ -291,7 +291,7 @@ class TocMdPlugin(BasePlugin):
     
     def shift_non_index(self, item: TocItem, page:Page, lang):
 
-        index_re = re.compile('.*(index\.' + lang + '\.md$|index\.md$)')
+        index_re = re.compile('.*(index.' + lang + '.md$|index.md$)')
         hasindex = False
         for path in os.listdir(Path(page.file.abs_src_path).parent):
             if index_re.match(path):
