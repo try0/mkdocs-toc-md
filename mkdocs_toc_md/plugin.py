@@ -39,7 +39,7 @@ class TocMdPlugin(BasePlugin):
         ('integrate_mkdocs_static_i18n', config_options.Type(bool, default=False)),
         ('extend_module', config_options.Type(bool, default=False)),
         ('shift_header', config_options.Type(str, default='none')),
-        ('output_comment_type', config_options.Type(str, default='html')),
+        ('output_comment', config_options.Type(str, default='html')),
     )
 
     def __init__(self):
