@@ -67,18 +67,26 @@ plugins:
 ### toc_page_title: str  
 h1 text in the table of contents markdown file.
 
+default: Contents
+
 ### toc_page_description: str
 The description will be rendered below the h1 tag in the table of contents.
+
+default: None
 
 ### header_level: int  
 Header level (depth) to render.  
 h1→1, h2→2, ...
+
+default: 3
 
 ### pickup_description_meta: bool  
 The plugin renders the description after the h2 header in the table of contents markdown file. If you use metadata (front matter), there is no need to set this option.
 ```html
 <mata name="description" content="pickup target value" />
 ```
+
+default: False
 
 ### pickup_description_class: bool  
 The plugin renders the description after the h2 header in the table of contents markdown file. If you use metadata (front matter), there is no need to set this option.
@@ -90,32 +98,47 @@ The plugin renders the description after the h2 header in the table of contents 
 pickup target value
 </div>
 ```
+default: False
 
 ### output_path: str  
 Path to save rendered toc md file.  
 index.md → docs/index.md
 
+default: index.md
+
 ### output_log: bool  
 Output contents of markdown file to console.
+
+default: False
 
 ### ignore_page_pattern: str  
 Regular expression pattern of markdown file names to be excluded from toc markdown file.  
 To prevent the table of contents page from listing itself, set the same value as the output file name (output_path).
 
+default: ''
+
 ### remove_navigation_page_pattern: str  
 Regular expression pattern of markdown file names to remove navigation items.  
 To hide the navigation on the table of contents page, set the same value as the output file name (output_path).
+
+default: ''
 
 ### template_dir_path: str
 Path of template dir.
 Put `toc.md.j2` in your custom template dir.
 
+default: ''
+
 ### beautiful_soup_parser: str
 Parser used in BeautifulSoup. Default is html.parser.  
 If using html5lib or lxml, you need to install additional dependencies.
 
+default: html.parser
+
 ### integrate_mkdocs_static_i18n: bool
 With [mkdocs-static-i18n](https://github.com/ultrabug/mkdocs-static-i18n)
+
+default: False
 
 ### languages: dict
 Use with integrate_mkdocs_static_i18n option.
@@ -130,3 +153,55 @@ languages:
         toc_page_title: 目次
         toc_page_description: mkdocs-toc-mdプラグインの使い方
 ```
+
+default: dict()
+
+### shift_header: str
+`after_index`  
+    Shifts the header level except for the index file in the directory.
+
+`after_h1_of_index`  
+    Shifts the header level after h1 in index.
+
+`none` (default)
+
+### extend_module: bool
+Some processes can be extended by placing the toc_extend_module.py file in the docs folder.
+
+```
+├─ docs
+│  ├─ mkdocs.yml
+│  ├─ toc_extend_module.py
+```
+
+[Sample/toc_extend_module.py](./sample/toc_extend_module.py)
+
+`find_src_elements` -> list[Tag]  
+args
+1. bs_page_soup: BeautifulSoup
+1. page: Page
+1. toc_config: TocConfig
+
+`create_toc_items` -> list[TocItem]  
+args
+1. page: Page
+1. page_description: str
+1. src_elements: list[Tag]
+1. toc_config: TocConfig
+
+`on_create_toc_item`  
+args
+1. toc_item: TocItem
+1. src_element: Tag
+1. page: Page
+1. toc_config: TocConfig
+
+`on_before_output`  
+args
+1. nav: Navigation
+1. toc_items: list[TocItem]
+1. toc_config: TocConfig
+
+### output_comment: str
+
+`html` (default), `metadata`, `none`
