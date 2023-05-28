@@ -38,6 +38,7 @@ plugins:
           toc_page_description: mkdocs-toc-mdプラグインの使い方
       shift_header: after_h1_of_index
       extend_module: true
+      output_comment: html
   - i18n:
       default_language: en
       languages:

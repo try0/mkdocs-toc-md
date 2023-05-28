@@ -386,6 +386,27 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#shift_header-str-after_index-after_h1_of_index-none" class="md-nav__link">
+    shift_header: str (after_index, after_h1_of_index, none)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extend_module-bool" class="md-nav__link">
+    extend_module: bool
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#output_comment-str-html-metadata-none" class="md-nav__link">
+    output_comment: str (html, metadata, none)
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -638,6 +659,27 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#shift_header-str-after_index-after_h1_of_index-none" class="md-nav__link">
+    shift_header: str (after_index, after_h1_of_index, none)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extend_module-bool" class="md-nav__link">
+    extend_module: bool
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#output_comment-str-html-metadata-none" class="md-nav__link">
+    output_comment: str (html, metadata, none)
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -675,27 +717,35 @@
 </code></pre></div></li>
 <li>
 <p>Add plugin conifg to mkdocs.yml.</p>
+<p>Minimum
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>plugins:
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    - toc-md:
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>        toc_page_title: Contents
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>        toc_page_description: Usage mkdocs-toc-md
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>        header_level: 6
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>        pickup_description_meta: true
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>        pickup_description_class: true
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>        output_path: index.md
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>        output_log: false
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>        ignore_page_pattern: index.*.md
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>        remove_navigation_page_pattern: index.*.md
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>        template_dir_path: custom_template
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>        integrate_mkdocs_static_i18n: true
-<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>        languages:
-<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>            en:
-<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>                toc_page_title: Contents
-<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>                toc_page_description: Usage mkdocs-toc-md
-<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>            ja:
-<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>                toc_page_title: 目次
-<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>                toc_page_description: mkdocs-toc-mdプラグインの使い方
-</code></pre></div>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  - toc-md:
+</code></pre></div></p>
+<p>Full
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>plugins:
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  - toc-md:
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    toc_page_title: Contents
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    toc_page_description: Usage mkdocs-toc-md
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    header_level: 3
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    pickup_description_meta: false
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    pickup_description_class: false
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    output_path: index.md
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    output_log: false
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>    ignore_page_pattern: index.*.md$
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>    remove_navigation_page_pattern: index.*.md$
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>    template_dir_path: custom_template
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>    integrate_mkdocs_static_i18n: true
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>    languages:
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>      en:
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>        toc_page_title: Contents
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>        toc_page_description: Usage mkdocs-toc-md
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>      ja:
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>        toc_page_title: 目次
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>        toc_page_description: mkdocs-toc-mdプラグインの使い方
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>    shift_header: after_h1_of_index
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>    extend_module: true
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>    output_comment: html
+</code></pre></div></p>
 </li>
 <li>
 <p>Run <code>mkdocs serve</code> to output toc md file.</p>
@@ -703,61 +753,129 @@
 </ol>
 <h3 id="adds-description">Adds description.<a class="headerlink" href="#adds-description" title="Permanent link">&para;</a></h3>
 <p>If you use metadata (front matter), set the value with toc_md_description as a key.
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>---
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>toc_md_description: pickup target value
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>---
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>---
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>toc_md_description: pickup target value
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>---
 </code></pre></div></p>
 <p>or use options <code>pickup_description_meta</code> <code>pickup_description_class</code>.</p>
 <h2 id="options">Options<a class="headerlink" href="#options" title="Permanent link">&para;</a></h2>
 <h3 id="toc_page_title-str">toc_page_title: str<a class="headerlink" href="#toc_page_title-str" title="Permanent link">&para;</a></h3>
-<p>h1 text in toc md.</p>
+<p>h1 text in the table of contents markdown file.</p>
+<p>default: Contents</p>
 <h3 id="toc_page_description-str">toc_page_description: str<a class="headerlink" href="#toc_page_description-str" title="Permanent link">&para;</a></h3>
-<p>Renders description after h1.</p>
+<p>The description will be rendered below the h1 tag in the table of contents.</p>
+<p>default: None</p>
 <h3 id="header_level-int">header_level: int<a class="headerlink" href="#header_level-int" title="Permanent link">&para;</a></h3>
 <p>Header level (depth) to render.<br />
 h1→1, h2→2, ...</p>
+<p>default: 3</p>
 <h3 id="pickup_description_meta-bool">pickup_description_meta: bool<a class="headerlink" href="#pickup_description_meta-bool" title="Permanent link">&para;</a></h3>
-<p>Renders description after h2 in toc md. If you use metadata (front matter), no need set this option.
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">&lt;</span><span class="nt">mata</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;description&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;pickup target value&quot;</span> <span class="p">/&gt;</span>
+<p>The plugin renders the description after the h2 header in the table of contents markdown file. If you use metadata (front matter), there is no need to set this option.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">&lt;</span><span class="nt">mata</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;description&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;pickup target value&quot;</span> <span class="p">/&gt;</span>
 </code></pre></div></p>
+<p>default: False</p>
 <h3 id="pickup_description_class-bool">pickup_description_class: bool<a class="headerlink" href="#pickup_description_class-bool" title="Permanent link">&para;</a></h3>
-<p>Renders description after h2 in toc md. If you use metadata (front matter), no need set this option.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="gh"># mkdocs-toc-md</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>&lt;div class=&quot;toc-md-description&quot;&gt;
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>pickup target value
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>&lt;/div&gt;
+<p>The plugin renders the description after the h2 header in the table of contents markdown file. If you use metadata (front matter), there is no need to set this option.</p>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="gh"># mkdocs-toc-md</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>&lt;div class=&quot;toc-md-description&quot;&gt;
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>pickup target value
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>&lt;/div&gt;
 </code></pre></div>
+default: False</p>
 <h3 id="output_path-str">output_path: str<a class="headerlink" href="#output_path-str" title="Permanent link">&para;</a></h3>
 <p>Path to save rendered toc md file.<br />
 index.md → docs/index.md</p>
+<p>default: index.md</p>
 <h3 id="output_log-bool">output_log: bool<a class="headerlink" href="#output_log-bool" title="Permanent link">&para;</a></h3>
-<p>Output toc md contents to console.</p>
+<p>Output contents of markdown file to console.</p>
+<p>default: False</p>
 <h3 id="ignore_page_pattern-str">ignore_page_pattern: str<a class="headerlink" href="#ignore_page_pattern-str" title="Permanent link">&para;</a></h3>
-<p>Regular expression pattern of md filenames to be excluded from toc md files.<br />
+<p>Regular expression pattern of markdown file names to be excluded from toc markdown file.<br />
 To prevent the table of contents page from listing itself, set the same value as the output file name (output_path).</p>
+<p>default: ''</p>
 <h3 id="remove_navigation_page_pattern-str">remove_navigation_page_pattern: str<a class="headerlink" href="#remove_navigation_page_pattern-str" title="Permanent link">&para;</a></h3>
-<p>Regular expression pattern of md filenames to remove navigation items.<br />
+<p>Regular expression pattern of markdown file names to remove navigation items.<br />
 To hide the navigation on the table of contents page, set the same value as the output file name (output_path).</p>
+<p>default: ''</p>
 <h3 id="template_dir_path-str">template_dir_path: str<a class="headerlink" href="#template_dir_path-str" title="Permanent link">&para;</a></h3>
 <p>Path of template dir.
 Put <code>toc.md.j2</code> in your custom template dir.</p>
+<p>default: ''</p>
 <h3 id="beautiful_soup_parser-str">beautiful_soup_parser: str<a class="headerlink" href="#beautiful_soup_parser-str" title="Permanent link">&para;</a></h3>
 <p>Parser used in BeautifulSoup. Default is html.parser.<br />
 If using html5lib or lxml, you need to install additional dependencies.</p>
+<p>default: html.parser</p>
 <h3 id="integrate_mkdocs_static_i18n-bool">integrate_mkdocs_static_i18n: bool<a class="headerlink" href="#integrate_mkdocs_static_i18n-bool" title="Permanent link">&para;</a></h3>
 <p>With <a href="https://github.com/ultrabug/mkdocs-static-i18n">mkdocs-static-i18n</a></p>
+<p>default: False</p>
 <h3 id="languages-dict">languages: dict<a class="headerlink" href="#languages-dict" title="Permanent link">&para;</a></h3>
 <p>Use with integrate_mkdocs_static_i18n option.
 Set toc_page_title, toc_page_description for each language.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>languages:
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    en:
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>        toc_page_title: Contents
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>        toc_page_description: Usage mkdocs-toc-md
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    ja:
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>        toc_page_title: 目次
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>        toc_page_description: mkdocs-toc-mdプラグインの使い方
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>languages:
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    en:
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>        toc_page_title: Contents
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>        toc_page_description: Usage mkdocs-toc-md
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    ja:
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>        toc_page_title: 目次
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>        toc_page_description: mkdocs-toc-mdプラグインの使い方
 </code></pre></div>
+<p>default: dict()</p>
+<h3 id="shift_header-str-after_index-after_h1_of_index-none">shift_header: str (after_index, after_h1_of_index, none)<a class="headerlink" href="#shift_header-str-after_index-after_h1_of_index-none" title="Permanent link">&para;</a></h3>
+<p><code>after_index</code><br />
+    Shifts the header level(+1) except for the index file in the directory.</p>
+<p><code>after_h1_of_index</code><br />
+    Shifts the header level(+1) after h1 in index file and except for the index file in the directory.</p>
+<p><code>none</code> (default)</p>
+<h3 id="extend_module-bool">extend_module: bool<a class="headerlink" href="#extend_module-bool" title="Permanent link">&para;</a></h3>
+<p>Some processes can be extended by placing the toc_extend_module.py file in the docs folder.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>├─ docs
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>│  ├─ mkdocs.yml
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>│  ├─ toc_extend_module.py
+</code></pre></div>
+<p><a href="https://github.com/try0/mkdocs-toc-md/blob/main/sample/toc_extend_module.py">Sample/toc_extend_module.py</a></p>
+<p><code>find_src_elements</code> -&gt; list[bs4.element.Tag]<br />
+args</p>
+<ol>
+<li><code>bs_page_soup</code>: bs4.BeautifulSoup</li>
+<li><code>page</code>: mkdocs.structure.pages.Page</li>
+<li><code>toc_config</code>: mkdocs_toc_md.objects.TocConfig</li>
+</ol>
+<p><code>create_toc_items</code> -&gt; list[mkdocs_toc_md.objects.TocItem]<br />
+args</p>
+<ol>
+<li><code>page</code>: mkdocs.structure.pages.Page</li>
+<li><code>page_description</code>: str</li>
+<li><code>src_elements</code>: list[bs4.element.Tag]</li>
+<li><code>toc_config</code>: mkdocs_toc_md.objects.TocConfig</li>
+</ol>
+<p><code>on_create_toc_item</code><br />
+args</p>
+<ol>
+<li><code>toc_item</code>: mkdocs_toc_md.objects.TocItem</li>
+<li><code>src_element</code>: bs4.element.Tag</li>
+<li><code>page</code>: mkdocs.structure.pages.Page</li>
+<li><code>toc_config</code>: mkdocs_toc_md.objects.TocConfig</li>
+</ol>
+<p><code>on_before_output</code><br />
+args</p>
+<ol>
+<li><code>nav</code>: mkdocs.structure.nav.Navigation</li>
+<li><code>toc_items</code>: list[mkdocs_toc_md.objects.TocItem]</li>
+<li><code>toc_config</code>: mkdocs_toc_md.objects.TocConfig</li>
+</ol>
+<h3 id="output_comment-str-html-metadata-none">output_comment: str (html, metadata, none)<a class="headerlink" href="#output_comment-str-html-metadata-none" title="Permanent link">&para;</a></h3>
+<p><code>html</code> (default)
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="cm">&lt;!-- ====================== TOC ====================== --&gt;</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="cm">&lt;!-- Generated by mkdocs-toc-md plugin --&gt;</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="cm">&lt;!-- ================================================= --&gt;</span>
+</code></pre></div></p>
+<p><code>metadata</code>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>---
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>toc_output_comment: Generated by mkdocs-toc-md plugin
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>---
+</code></pre></div></p>
+<p><code>none</code></p>
 
 
 
