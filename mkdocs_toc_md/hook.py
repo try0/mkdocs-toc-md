@@ -11,6 +11,8 @@ from mkdocs.structure.nav import Navigation
 from mkdocs.config.base import Config
 from typing import TYPE_CHECKING
 
+from mkdocs_toc_md.objects import TocConfig
+
 if TYPE_CHECKING:
     from mkdocs_toc_md.objects import TocItem
 
@@ -25,10 +27,11 @@ class TocExtendModule(object):
         if os.path.exists(module_file):
             server.watch(module_file, builder)
 
-    def __init__(self):
+    def __init__(self, toc_config: TocConfig):
         self.logger = logging.getLogger(
             'mkdocs.toc-md').getChild('extend-module')
         self.delegate_module = self.load_module()
+        self.toc_config = toc_config
 
     def load_module(self):
         cwd = os.getcwd()
@@ -49,22 +52,22 @@ class TocExtendModule(object):
 
     def find_src_elements(self, bf_page_soup: BeautifulSoup, page: Page) -> list[Tag]:
         if self.can_call('find_src_elements'):
-            return self.delegate_module.find_src_elements(bf_page_soup, page, self.logger)
+            return self.delegate_module.find_src_elements(bf_page_soup, page, self.toc_config)
         else:
             return []
 
     def create_toc_items(self, page: Page, toc_description: str, header_elements: list[Tag]) -> list['TocItem']:
         if self.can_call('create_toc_items'):
-            return self.delegate_module.create_toc_items(page, toc_description, header_elements, self.logger)
+            return self.delegate_module.create_toc_items(page, toc_description, header_elements, self.toc_config)
         else:
             return []
 
     def on_create_toc_item(self, toc_item: 'TocItem', src_element: Tag, page: Page):
         if self.can_call('on_create_toc_item'):
             self.delegate_module.on_create_toc_item(
-                toc_item, src_element, page, self.logger)
+                toc_item, src_element, page, self.toc_config)
 
     def on_before_output(self, nav: Navigation, toc_headers: list['TocItem']):
         if self.can_call('on_before_output'):
             self.delegate_module.on_before_output(
-                nav, toc_headers, self.logger)
+                nav, toc_headers, self.toc_config)

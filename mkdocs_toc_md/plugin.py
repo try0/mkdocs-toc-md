@@ -8,15 +8,15 @@ from mkdocs.plugins import BasePlugin
 from mkdocs.config import config_options
 from mkdocs.structure.pages import Page
 from mkdocs.structure.nav import Navigation
+from mkdocs_toc_md.objects import TocConfig, TocItem, TocPageData
+from mkdocs_toc_md.hook import TocExtendModule
 from bs4 import BeautifulSoup
 from jinja2 import Environment, FileSystemLoader
-
-from mkdocs_toc_md.objects import TocItem, TocPageData
 try:
     from mkdocs.plugins import event_priority
 except ImportError:
     def event_priority(priority): return lambda f: f  # No-op fallback
-from .hook import TocExtendModule
+
 
 logging.getLogger(__name__)
 
@@ -58,12 +58,14 @@ class TocMdPlugin(BasePlugin):
     def on_pre_build(self, config):
         self.logger.info("Enabled toc-md plugin")
 
+        self.toc_config = TocConfig(config, self.config)
+
         # mkdocs-static-i18n
         self.i18n_plugin = None
         if self.config['integrate_mkdocs_static_i18n'] and 'i18n' in config['plugins']:
             self.i18n_plugin = config['plugins']['i18n']
 
-        self.hook = TocExtendModule()
+        self.hook = TocExtendModule(self.toc_config)
 
     def on_serve(self, server, config, builder):
         TocExtendModule.watch_file(server, builder)

@@ -1,3 +1,8 @@
+class TocConfig:
+    def __init__(self, mkdocs_config, plugin_config) -> None:
+        self.mkdocs_config = mkdocs_config
+        self.plugin_config = plugin_config
+
 
 class TocPageData:
     """ Page params """
