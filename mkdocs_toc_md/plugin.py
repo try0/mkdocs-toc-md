@@ -288,6 +288,10 @@ class TocMdPlugin(BasePlugin):
 
     def shift_header(self, item: TocItem, page: Page, lang):
 
+        if page.file.src_path.count('/') <= 0:
+            # skip root
+            return
+
         index_re = re.compile('.*(index.' + lang + '.md$|index.md$)')
         hasindex = False
         for path in os.listdir(Path(page.file.abs_src_path).parent):
