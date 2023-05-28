@@ -288,7 +288,7 @@ class TocMdPlugin(BasePlugin):
 
     def shift_header(self, item: TocItem, page: Page, lang):
 
-        if page.file.src_path.count('/') <= 0:
+        if page.file.src_path.count(os.sep) <= 0:
             # skip root
             return
 
