@@ -12,7 +12,7 @@ from mkdocs.config.base import Config
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from mkdocs_toc_md.plugin import TocItem
+    from mkdocs_toc_md.objects import TocItem
 
 
 
