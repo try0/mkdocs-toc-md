@@ -1,3 +1,4 @@
+from pathlib import Path
 import sys
 import logging
 import os
@@ -5,6 +6,8 @@ import re
 from mkdocs import plugins
 from mkdocs.plugins import BasePlugin
 from mkdocs.config import config_options
+from mkdocs.structure.pages import Page
+from mkdocs.structure.nav import Navigation
 from bs4 import BeautifulSoup
 from jinja2 import Environment, FileSystemLoader
 
@@ -36,6 +39,7 @@ class TocMdPlugin(BasePlugin):
         ('languages', config_options.Type(dict, default=dict())),
         ('integrate_mkdocs_static_i18n', config_options.Type(bool, default=False)),
         ('extend_module', config_options.Type(bool, default=False)),
+        ('shift_non_index', config_options.Type(bool, default=False)),
     )
 
 
@@ -197,6 +201,9 @@ class TocMdPlugin(BasePlugin):
                     elif elm.name == 'h6' :
                         toc_header.src_level = 6
 
+                    if self.config['shift_non_index']:
+                        self.shift_non_index(toc_header, page, lang)
+
                     if self.use_extend_module('on_create_toc_item'):
                         # user hook
                         self.hook.on_create_toc_item(toc_header, elm, page)
@@ -281,3 +288,16 @@ class TocMdPlugin(BasePlugin):
 
     def use_extend_module(self, name) -> bool:
         return 'extend_module' in self.config and self.config['extend_module'] and self.hook.can_call(name) 
+    
+    def shift_non_index(self, item: TocItem, page:Page, lang):
+
+        index_re = re.compile('.*(index\.' + lang + '\.md$|index\.md$)')
+        hasindex = False
+        for path in os.listdir(Path(page.file.abs_src_path).parent):
+            if index_re.match(path):
+                hasindex = True
+                break
+
+        if hasindex and not index_re.match(page.file.src_path):
+            item.src_level += 1
+
