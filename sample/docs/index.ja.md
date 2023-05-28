@@ -10,14 +10,14 @@
 
 mkdocs-toc-mdプラグインの使い方
 
-### [mkdocs-toc-md](mkdocs-toc-md.ja.md#mkdocs-toc-md)
+## [mkdocs-toc-md](mkdocs-toc-md.ja.md#mkdocs-toc-md)
 mkdocs-toc-md プラグインの使い方を説明します。
 
-* [サンプル](mkdocs-toc-md.ja.md#_1)
-* [使い方](mkdocs-toc-md.ja.md#_2)
+### [サンプル](mkdocs-toc-md.ja.md#_1)
+### [使い方](mkdocs-toc-md.ja.md#_2)
 * [目次マークダウンを出力する](mkdocs-toc-md.ja.md#_3)
 * [概要説明を追加する](mkdocs-toc-md.ja.md#_4)
-* [オプション](mkdocs-toc-md.ja.md#_5)
+### [オプション](mkdocs-toc-md.ja.md#_5)
 * [toc_page_title: str](mkdocs-toc-md.ja.md#toc_page_title-str)
 * [toc_page_description: str](mkdocs-toc-md.ja.md#toc_page_description-str)
 * [header_level: int](mkdocs-toc-md.ja.md#header_level-int)
@@ -37,9 +37,6 @@ mkdocs-toc-md プラグインの使い方を説明します。
 ## [nestmd](nestfolder/nest.md#nestmd)
 ### [Level2 header1](nestfolder/nest.md#level2-header1)
 * [level3 header1](nestfolder/nest.md#level3-header1)
-* [level4 header](nestfolder/nest.md#level4-header)
-* [level5 header](nestfolder/nest.md#level5-header)
-* [level6 header](nestfolder/nest.md#level6-header)
 * [level3 header2](nestfolder/nest.md#level3-header2)
 * [level3 header3](nestfolder/nest.md#level3-header3)
 ### [Level2 header2](nestfolder/nest.md#level2-header2)

@@ -20,7 +20,7 @@ plugins:
   - toc-md:
       toc_page_title: Contents
       toc_page_description: Usage mkdocs-toc-md
-      header_level: 6
+      header_level: 3
       pickup_description_meta: true
       pickup_description_class: true
       output_path: index.md
