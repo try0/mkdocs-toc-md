@@ -15,7 +15,6 @@ if TYPE_CHECKING:
     from mkdocs_toc_md.objects import TocItem
 
 
-
 class TocExtendModule(object):
 
     module_name = 'toc_extend_module'

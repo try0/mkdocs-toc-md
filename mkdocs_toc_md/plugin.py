@@ -15,11 +15,10 @@ from mkdocs_toc_md.objects import TocItem, TocPageData
 try:
     from mkdocs.plugins import event_priority
 except ImportError:
-    event_priority = lambda priority: lambda f: f  # No-op fallback
+    def event_priority(priority): return lambda f: f  # No-op fallback
 from .hook import TocExtendModule
 
 logging.getLogger(__name__)
-
 
 
 class TocMdPlugin(BasePlugin):
@@ -42,11 +41,10 @@ class TocMdPlugin(BasePlugin):
         ('shift_non_index', config_options.Type(bool, default=False)),
     )
 
-
     def __init__(self):
         self.logger = logging.getLogger('mkdocs.toc-md')
         self.logger.setLevel(logging.INFO)
-        
+
         self.toc_description_class = 'toc-md-description'
 
         self.toc_output_comment = ''
@@ -57,10 +55,9 @@ class TocMdPlugin(BasePlugin):
 
         self.is_build_command = 'build' in sys.argv
 
-
     def on_pre_build(self, config):
         self.logger.info("Enabled toc-md plugin")
-      
+
         # mkdocs-static-i18n
         self.i18n_plugin = None
         if self.config['integrate_mkdocs_static_i18n'] and 'i18n' in config['plugins']:
@@ -68,15 +65,12 @@ class TocMdPlugin(BasePlugin):
 
         self.hook = TocExtendModule()
 
-
     def on_serve(self, server, config, builder):
         TocExtendModule.watch_file(server, builder)
 
     def on_nav(self, nav, config, files):
         # keep navigations
         self.nav = nav
-
-
 
     def on_post_page(self, output_content, page, config):
         # remove navigation items
@@ -86,17 +80,17 @@ class TocMdPlugin(BasePlugin):
             if remove_navigation_page_re.match(page.file.src_path):
                 self.logger.info("toc-md: Remove toc")
 
-                soup = BeautifulSoup(output_content, self.config['beautiful_soup_parser'])
+                soup = BeautifulSoup(
+                    output_content, self.config['beautiful_soup_parser'])
                 for nav_elm in soup.find_all("nav", {"class": "md-nav md-nav--secondary"}):
                     nav_elm.decompose()
-        
+
                 souped_html = soup.prettify(soup.original_encoding)
-                return souped_html 
+                return souped_html
 
         return output_content
-    
 
-    @plugins.event_priority(-100) 
+    @plugins.event_priority(-100)
     def on_post_build(self, config):
 
         ignore_file_pattern = self.config['ignore_page_pattern']
@@ -109,7 +103,6 @@ class TocMdPlugin(BasePlugin):
             self.header_names.append('h' + str(level + 1))
 
         self.logger.info('toc-md: Lookup ' + ', '.join(self.header_names))
-
 
         if self.i18n_plugin:
             # mkdocs-static-i18n
@@ -128,7 +121,6 @@ class TocMdPlugin(BasePlugin):
 
             self.output(config, self.nav, "", "")
 
-
     def output(self, config, nav, lang, folder):
 
         # Pickup headers
@@ -139,23 +131,27 @@ class TocMdPlugin(BasePlugin):
                 if page.file.src_path == output_path:
                     continue
 
-            ignore = self.ignore_re and self.ignore_re.match(page.file.src_path)
+            ignore = self.ignore_re and self.ignore_re.match(
+                page.file.src_path)
             if ignore:
                 continue
 
-            soup = BeautifulSoup(page.content, self.config['beautiful_soup_parser'])
+            soup = BeautifulSoup(
+                page.content, self.config['beautiful_soup_parser'])
 
             # extract page description
             toc_description = ''
             if 'pickup_description_meta' in self.config:
                 if self.config['pickup_description_meta']:
-                    description_elm = soup.find('meta', attrs={'name':'description'})
+                    description_elm = soup.find(
+                        'meta', attrs={'name': 'description'})
                     if description_elm is not None:
                         toc_description += description_elm['content']
 
             if 'pickup_description_class' in self.config:
                 if self.config['pickup_description_class']:
-                    description_elm = soup.find(True, class_=self.toc_description_class)
+                    description_elm = soup.find(
+                        True, class_=self.toc_description_class)
                     if description_elm is not None:
                         toc_description += description_elm.text
 
@@ -173,7 +169,8 @@ class TocMdPlugin(BasePlugin):
 
             if self.use_extend_module('create_toc_items'):
                 # user impl
-                items = self.hook.create_toc_items(page, toc_description, src_elements)
+                items = self.hook.create_toc_items(
+                    page, toc_description, src_elements)
                 toc_headers.extend(items)
             else:
                 # default
@@ -192,13 +189,13 @@ class TocMdPlugin(BasePlugin):
                             toc_header.description = toc_description
                     elif elm.name == 'h2':
                         toc_header.src_level = 2
-                    elif elm.name == 'h3' :
+                    elif elm.name == 'h3':
                         toc_header.src_level = 3
-                    elif elm.name == 'h4' :
+                    elif elm.name == 'h4':
                         toc_header.src_level = 4
-                    elif elm.name == 'h5' :
+                    elif elm.name == 'h5':
                         toc_header.src_level = 5
-                    elif elm.name == 'h6' :
+                    elif elm.name == 'h6':
                         toc_header.src_level = 6
 
                     if self.config['shift_non_index']:
@@ -230,10 +227,9 @@ class TocMdPlugin(BasePlugin):
 
         self.output_md_file(config, template_param, lang, folder)
 
-
     def output_md_file(self, config, template_param, file_suffix, append_folder):
         """ Outputs markdown file. """
-        
+
         base_path = os.path.abspath(os.path.dirname(__file__))
         template_path = [os.path.join(base_path, 'template')]
 
@@ -245,11 +241,11 @@ class TocMdPlugin(BasePlugin):
 
         # render contents
         jinja_env = Environment(
-            loader = FileSystemLoader(template_path),
-            trim_blocks = True
+            loader=FileSystemLoader(template_path),
+            trim_blocks=True
         )
         template = jinja_env.get_template('toc.md.j2')
-        toc_output = template.render(data = template_param)
+        toc_output = template.render(data=template_param)
 
         # print to console
         if 'output_log' in self.config:
@@ -263,12 +259,13 @@ class TocMdPlugin(BasePlugin):
                 output_path = re.sub('md$', file_suffix + '.md', output_path)
 
             if output_path:
-                abs_md_path = os.path.join(config['docs_dir'], append_folder, output_path)
+                abs_md_path = os.path.join(
+                    config['docs_dir'], append_folder, output_path)
                 os.makedirs(os.path.dirname(abs_md_path), exist_ok=True)
 
-                 # avoid infinite loop
+                # avoid infinite loop
                 if os.path.isfile(abs_md_path):
-                     with open(abs_md_path, 'r', encoding='utf-8') as file:
+                    with open(abs_md_path, 'r', encoding='utf-8') as file:
                         old_content = file.read()
                         if old_content == toc_output:
                             self.logger.info(f'toc-md: No changes')
@@ -277,19 +274,21 @@ class TocMdPlugin(BasePlugin):
                 mode = 'x'
                 if os.path.isfile(abs_md_path):
                     mode = 'w'
-                
+
                 with open(abs_md_path, mode, encoding='utf-8') as file:
                     file.write(toc_output)
-                
-                self.logger.info(f'toc-md: Output a toc markdown file to "{abs_md_path}".')
+
+                self.logger.info(
+                    f'toc-md: Output a toc markdown file to "{abs_md_path}".')
 
                 if self.is_build_command:
-                    self.logger.warning('toc-md: Command line contains [build]. You may need to build again to render toc md as html.')
+                    self.logger.warning(
+                        'toc-md: Command line contains [build]. You may need to build again to render toc md as html.')
 
     def use_extend_module(self, name) -> bool:
-        return 'extend_module' in self.config and self.config['extend_module'] and self.hook.can_call(name) 
-    
-    def shift_non_index(self, item: TocItem, page:Page, lang):
+        return 'extend_module' in self.config and self.config['extend_module'] and self.hook.can_call(name)
+
+    def shift_non_index(self, item: TocItem, page: Page, lang):
 
         index_re = re.compile('.*(index.' + lang + '.md$|index.md$)')
         hasindex = False
@@ -300,4 +299,3 @@ class TocMdPlugin(BasePlugin):
 
         if hasindex and not index_re.match(page.file.src_path):
             item.src_level += 1
-
