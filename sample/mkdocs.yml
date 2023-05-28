@@ -3,6 +3,9 @@ nav:
   - "index.md"
   - "mkdocs-toc-md.md"
   - nest.md: "nestfolder/nest.md"
+  - shift:
+    - index: shift/index.md
+    - main: shift/shift.md
 use_directory_urls: false
 repo_url: https://github.com/try0/mkdocs-toc-md
 repo_name: mkdocs-toc-md
@@ -11,7 +14,8 @@ theme:
   language: en  
   icon:
     repo: fontawesome/brands/github
-
+  features:
+    - navigation.indexes
 plugins:
   - toc-md:
       toc_page_title: Contents
@@ -32,6 +36,8 @@ plugins:
         ja:
           toc_page_title: 目次
           toc_page_description: mkdocs-toc-mdプラグインの使い方
+      shift_header: after_h1_of_index
+      extend_module: true
   - i18n:
       default_language: en
       languages:

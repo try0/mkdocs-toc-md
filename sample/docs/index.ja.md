@@ -10,14 +10,14 @@
 
 mkdocs-toc-mdプラグインの使い方
 
-## [mkdocs-toc-md](mkdocs-toc-md.ja.md#mkdocs-toc-md)
+### [mkdocs-toc-md](mkdocs-toc-md.ja.md#mkdocs-toc-md)
 mkdocs-toc-md プラグインの使い方を説明します。
 
-### [サンプル](mkdocs-toc-md.ja.md#_1)
-### [使い方](mkdocs-toc-md.ja.md#_2)
+* [サンプル](mkdocs-toc-md.ja.md#_1)
+* [使い方](mkdocs-toc-md.ja.md#_2)
 * [目次マークダウンを出力する](mkdocs-toc-md.ja.md#_3)
 * [概要説明を追加する](mkdocs-toc-md.ja.md#_4)
-### [オプション](mkdocs-toc-md.ja.md#_5)
+* [オプション](mkdocs-toc-md.ja.md#_5)
 * [toc_page_title: str](mkdocs-toc-md.ja.md#toc_page_title-str)
 * [toc_page_description: str](mkdocs-toc-md.ja.md#toc_page_description-str)
 * [header_level: int](mkdocs-toc-md.ja.md#header_level-int)
@@ -43,6 +43,12 @@ mkdocs-toc-md プラグインの使い方を説明します。
 * [level3 header1](nestfolder/nest.md#level3-header1_1)
 * [level3 header2](nestfolder/nest.md#level3-header2_1)
 * [level3 header3](nestfolder/nest.md#level3-header3_1)
+## [shift/index.ja.md](shift/index.ja.md#shiftindexjamd)
+indexファイルのh2以降の出力レベルを+1します。
+
+* [index](shift/index.ja.md#index)
+### [shift/shift.ja.md](shift/shift.ja.md#shiftshiftjamd)
+* [Level2](shift/shift.ja.md#level2)
 
 
 ---

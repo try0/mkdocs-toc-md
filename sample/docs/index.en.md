@@ -10,14 +10,14 @@
 
 Usage mkdocs-toc-md
 
-## [mkdocs-toc-md](mkdocs-toc-md.en.md#mkdocs-toc-md)
+### [mkdocs-toc-md](mkdocs-toc-md.en.md#mkdocs-toc-md)
 Describes how to use mkdocs-toc-md plugin.
 
-### [Sample](mkdocs-toc-md.en.md#sample)
-### [Usage](mkdocs-toc-md.en.md#usage)
+* [Sample](mkdocs-toc-md.en.md#sample)
+* [Usage](mkdocs-toc-md.en.md#usage)
 * [Generates toc markdown file.](mkdocs-toc-md.en.md#generates-toc-markdown-file)
 * [Adds description.](mkdocs-toc-md.en.md#adds-description)
-### [Options](mkdocs-toc-md.en.md#options)
+* [Options](mkdocs-toc-md.en.md#options)
 * [toc_page_title: str](mkdocs-toc-md.en.md#toc_page_title-str)
 * [toc_page_description: str](mkdocs-toc-md.en.md#toc_page_description-str)
 * [header_level: int](mkdocs-toc-md.en.md#header_level-int)
@@ -43,6 +43,12 @@ Describes how to use mkdocs-toc-md plugin.
 * [level3 header1](nestfolder/nest.md#level3-header1_1)
 * [level3 header2](nestfolder/nest.md#level3-header2_1)
 * [level3 header3](nestfolder/nest.md#level3-header3_1)
+## [shift/index.en.md](shift/index.en.md#shiftindexenmd)
+Shift after h1 in the index file.
+
+* [index](shift/index.en.md#index)
+### [shift/shift.en.md](shift/shift.en.md#shiftshiftenmd)
+* [Level2](shift/shift.en.md#level2)
 
 
 ---
