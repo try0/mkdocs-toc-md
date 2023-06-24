@@ -3,11 +3,12 @@ import sys
 import logging
 import os
 import re
+from typing import TYPE_CHECKING, Any, Iterator, List, Mapping, Optional, Type, TypeVar, Union
 from mkdocs import plugins
 from mkdocs.plugins import BasePlugin
 from mkdocs.config import config_options
 from mkdocs.structure.pages import Page
-from mkdocs.structure.nav import Navigation
+from mkdocs.structure.nav import Navigation, Section, Link
 from mkdocs_toc_md.objects import TocConfig, TocItem, TocPageData
 from mkdocs_toc_md.hook import TocExtendModule
 from bs4 import BeautifulSoup
@@ -64,11 +65,27 @@ class TocMdPlugin(BasePlugin):
         self.hook = TocExtendModule(self.toc_config)
 
     def on_serve(self, server, config, builder):
-        TocExtendModule.watch_file(server, builder)
+        # for dev
+        try:
+            TocExtendModule.watch_file(server, builder)
 
-    def on_nav(self, nav, config, files):
+            if 'output_path' in self.config:
+                output_path = self.config['output_path']
+                if self.i18n_plugin:
+                    for lang in self.i18n_plugin.i18n_navs:
+                        output_path_i18n = re.sub('md$', lang + '.md', output_path)
+                        if os.path.exists(output_path_i18n):
+                            server.watch(output_path_i18n, builder)
+                else:
+                    if os.path.exists(output_path):
+                        server.watch(output_path, builder)
+        except Exception as e:
+            self.logger.error('toc-md: Failed watch files', e)
+
+    def on_nav(self, nav: Navigation, config, files):
         # keep navigations
         self.nav = nav
+
 
     def on_post_page(self, output_content, page, config):
         # remove navigation items
@@ -119,90 +136,120 @@ class TocMdPlugin(BasePlugin):
 
             self.output(config, self.nav, "", "")
 
+    def create_toc_items(self, toc_items, nav_item: Union[Page, Section, Link], config, lang, nav_item_depth):
+
+        if nav_item.is_link and not nav_item.is_page:
+            # no page file
+            return
+        
+        if nav_item.is_section and not nav_item.is_page:
+            # no page file
+            if self.config['shift_header'] and not self.config['shift_header'] == 'none':
+                # consider nav hierarchy
+                nav_item_depth += 1
+
+            for child_item in nav_item.children:
+                self.create_toc_items(toc_items, child_item, config, lang, nav_item_depth)
+            return
+
+        # page file
+
+        page = nav_item
+        if 'output_path' in self.config:
+            output_path = self.config['output_path']
+            if page.file.src_path == output_path:
+                return
+
+        ignore = self.ignore_re and self.ignore_re.match(
+            page.file.src_path)
+        if ignore:
+            return
+
+        soup = BeautifulSoup(
+            page.content, self.config['beautiful_soup_parser'])
+
+        # extract page description
+        toc_description = ''
+        if 'pickup_description_meta' in self.config:
+            if self.config['pickup_description_meta']:
+                description_elm = soup.find(
+                    'meta', attrs={'name': 'description'})
+                if description_elm is not None:
+                    toc_description += description_elm['content']
+
+        if 'pickup_description_class' in self.config:
+            if self.config['pickup_description_class']:
+                description_elm = soup.find(
+                    True, class_=self.toc_description_class)
+                if description_elm is not None:
+                    toc_description += description_elm.text
+
+        if 'toc_md_description' in page.meta:
+            toc_description += page.meta['toc_md_description']
+
+        # create TocItem
+        src_elements = []
+        if self.use_extend_module('find_src_elements'):
+            # user impl
+            src_elements = self.hook.find_src_elements(soup, page)
+        else:
+            # default
+            src_elements = soup.find_all(self.header_names)
+
+        if self.use_extend_module('create_toc_items'):
+            # user impl
+            items = self.hook.create_toc_items(
+                page, toc_description, src_elements)
+            toc_items.extend(items)
+        else:
+            # default
+            for elm in src_elements:
+
+                toc_header = TocItem()
+                if elm.find('a', attrs={'class', 'headerlink'}):
+                    elm.a.extract()
+
+                toc_header.text = elm.text
+                toc_header.url = page.file.src_path + '#' + elm.get('id')
+
+                if elm.name == 'h1':
+                    toc_header.src_level = 1
+                    if toc_description:
+                        toc_header.description = toc_description
+                elif elm.name == 'h2':
+                    toc_header.src_level = 2
+                elif elm.name == 'h3':
+                    toc_header.src_level = 3
+                elif elm.name == 'h4':
+                    toc_header.src_level = 4
+                elif elm.name == 'h5':
+                    toc_header.src_level = 5
+                elif elm.name == 'h6':
+                    toc_header.src_level = 6
+
+                toc_header.level = (toc_header.src_level + nav_item_depth)
+
+                if self.config['shift_header'] and not self.config['shift_header'] == 'none':
+                    index_re = re.compile('.*(index.' + lang + '.md$|index.md$)')
+                    if self.config['shift_header'] == 'after_h1':
+                        if index_re.match(page.file.src_path):
+                            toc_header.level -= 1
+                    elif self.config['shift_header'] == 'after_h1_of_index':
+                        if index_re.match(page.file.src_path) and toc_header.src_level == 1:
+                            toc_header.level -= 1
+
+                if self.use_extend_module('on_create_toc_item'):
+                    # user hook
+                    self.hook.on_create_toc_item(toc_header, elm, page)
+                toc_items.append(toc_header)
+
     def output(self, config, nav, lang, folder):
 
         # Pickup headers
         toc_headers = []
-        for page in nav.pages:
-            if 'output_path' in self.config:
-                output_path = self.config['output_path']
-                if page.file.src_path == output_path:
-                    continue
-
-            ignore = self.ignore_re and self.ignore_re.match(
-                page.file.src_path)
-            if ignore:
-                continue
-
-            soup = BeautifulSoup(
-                page.content, self.config['beautiful_soup_parser'])
-
-            # extract page description
-            toc_description = ''
-            if 'pickup_description_meta' in self.config:
-                if self.config['pickup_description_meta']:
-                    description_elm = soup.find(
-                        'meta', attrs={'name': 'description'})
-                    if description_elm is not None:
-                        toc_description += description_elm['content']
-
-            if 'pickup_description_class' in self.config:
-                if self.config['pickup_description_class']:
-                    description_elm = soup.find(
-                        True, class_=self.toc_description_class)
-                    if description_elm is not None:
-                        toc_description += description_elm.text
-
-            if 'toc_md_description' in page.meta:
-                toc_description += page.meta['toc_md_description']
-
-            # create TocItem
-            src_elements = []
-            if self.use_extend_module('find_src_elements'):
-                # user impl
-                src_elements = self.hook.find_src_elements(soup, page)
-            else:
-                # default
-                src_elements = soup.find_all(self.header_names)
-
-            if self.use_extend_module('create_toc_items'):
-                # user impl
-                items = self.hook.create_toc_items(
-                    page, toc_description, src_elements)
-                toc_headers.extend(items)
-            else:
-                # default
-                for elm in src_elements:
-
-                    toc_header = TocItem()
-                    if elm.find('a', attrs={'class', 'headerlink'}):
-                        elm.a.extract()
-
-                    toc_header.text = elm.text
-                    toc_header.url = page.file.src_path + '#' + elm.get('id')
-
-                    if elm.name == 'h1':
-                        toc_header.src_level = 1
-                        if toc_description:
-                            toc_header.description = toc_description
-                    elif elm.name == 'h2':
-                        toc_header.src_level = 2
-                    elif elm.name == 'h3':
-                        toc_header.src_level = 3
-                    elif elm.name == 'h4':
-                        toc_header.src_level = 4
-                    elif elm.name == 'h5':
-                        toc_header.src_level = 5
-                    elif elm.name == 'h6':
-                        toc_header.src_level = 6
-
-                    if self.config['shift_header'] and not self.config['shift_header'] == 'none':
-                        self.shift_header(toc_header, page, lang)
-
-                    if self.use_extend_module('on_create_toc_item'):
-                        # user hook
-                        self.hook.on_create_toc_item(toc_header, elm, page)
-                    toc_headers.append(toc_header)
+        nav_item_depth = 1
+        for nav_item in nav.items:
+            self.create_toc_items(toc_headers, nav_item, config, lang, nav_item_depth)
 
         if self.use_extend_module('on_before_output'):
             # user hook
@@ -286,26 +333,4 @@ class TocMdPlugin(BasePlugin):
     def use_extend_module(self, name) -> bool:
         return 'extend_module' in self.config and self.config['extend_module'] and self.hook.can_call(name)
 
-    def shift_header(self, item: TocItem, page: Page, lang):
 
-        if page.file.src_path.count(os.sep) <= 0:
-            # skip root
-            return
-
-        index_re = re.compile('.*(index.' + lang + '.md$|index.md$)')
-        hasindex = False
-        for path in os.listdir(Path(page.file.abs_src_path).parent):
-            if index_re.match(path):
-                hasindex = True
-                break
-
-        if self.config['shift_header'] == 'after_index':
-            if hasindex and not index_re.match(page.file.src_path):
-                item.src_level += 1
-
-        if self.config['shift_header'] == 'after_h1_of_index':
-            if hasindex and (not index_re.match(page.file.src_path)):
-                item.src_level += 1
-            elif index_re.match(page.file.src_path) and item.src_level > 1:
-                item.src_level += 1
-            

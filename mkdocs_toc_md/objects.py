@@ -35,7 +35,8 @@ class TocPageData:
 
 class TocItem:
     """ headers """
-    src_level = 1
+    src_level = 0
+    level = 1
     text = None
     description = None
     url = None
@@ -44,8 +45,8 @@ class TocItem:
     def get_md_header_prefix(self) -> str:
         """ Gets level as markdown header. """
 
-        prefix = '#'
-        for num in range(self.src_level):
+        prefix = ''
+        for num in range(self.level):
             prefix += '#'
         return prefix
 
@@ -77,3 +78,9 @@ class TocItem:
 
     def has_description(self) -> bool:
         return self.description is not None
+
+    def get_src_level_as_string(self) -> str:
+        return str(self.src_level)
+    
+    def get_level_as_string(self) -> str:
+        return str(self.level)
