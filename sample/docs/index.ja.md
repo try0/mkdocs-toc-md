@@ -49,6 +49,12 @@ indexファイルのh2以降の出力レベルを+1します。
 * [index](shift/index.ja.md#index)
 ### [shift/shift.ja.md](shift/shift.ja.md#shiftshiftjamd)
 * [Level2](shift/shift.ja.md#level2)
+### [shift/sub/index.en.md](shift/shiftsub/index.ja.md#shiftsubindexenmd)
+shift/sub
+
+* [index](shift/shiftsub/index.ja.md#index)
+* [shift/shiftsub/shiftsub.ja.md](shift/shiftsub/shiftsub.ja.md#shiftshiftsubshiftsubjamd)
+* [Level2](shift/shiftsub/shiftsub.ja.md#level2)
 
 
 ---

@@ -9,7 +9,7 @@
 {% endif %}
 
 {% for header in data.toc_headers: %}
-{% if header.src_level < 3 %}
+{% if header.level <= 3 %}
 {{header.get_text_as_md_header()}}
 {% else %}
 {{header.get_text_as_md_ul_item()}}

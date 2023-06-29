@@ -6,6 +6,9 @@ nav:
   - shift:
     - index: shift/index.md
     - main: shift/shift.md
+    - shiftsub:
+      - index: shift/shiftsub/index.md
+      - main: shift/shiftsub/shiftsub.md
 use_directory_urls: false
 repo_url: https://github.com/try0/mkdocs-toc-md
 repo_name: mkdocs-toc-md
