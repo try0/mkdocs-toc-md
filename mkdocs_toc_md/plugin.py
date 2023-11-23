@@ -210,8 +210,14 @@ class TocMdPlugin(BasePlugin):
                     elm.a.extract()
 
                 toc_header.text = elm.text
-                toc_header.url = page.file.src_path + '#' + elm.get('id')
 
+                if elm.has_attr("id"):
+                    toc_header.url = page.file.src_path + '#' + elm.get('id')
+                else:
+                    toc_header.url = page.file.src_path
+                    self.logger.warning(
+                        'toc-md: Cannot generate URL with hash property because the target element has no id attribute.')
+                    
                 if elm.name == 'h1':
                     toc_header.src_level = 1
                     if toc_description:
