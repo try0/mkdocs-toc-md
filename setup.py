@@ -7,7 +7,7 @@ from setuptools import setup
 # twine upload --repository pypi dist/*
 setup(
     name='mkdocs-toc-md',
-    version='0.0.8',
+    version='0.0.9',
     description='Generate a table of contents markdown file',
     long_description=io.open('README.md', encoding='utf8').read(),
     long_description_content_type='text/markdown',
