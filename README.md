@@ -1,191 +1,121 @@
-
 # mkdocs-toc-md
 
-[mkdocs-toc-md](https://pypi.org/project/mkdocs-toc-md/) is a plugin for mkdocs that generates a table of contents in markdown format. To render the table of contents as HTML, the markdown file must be generated before running `mkdocs build`.
+[English](./README.md) | [Japanese](./README.ja.md)
+
+[mkdocs-toc-md](https://pypi.org/project/mkdocs-toc-md/) is a MkDocs plugin that generates a table-of-contents Markdown file from your MkDocs navigation and page headings.
+
+The generated Markdown file must be created before `mkdocs build` renders it as HTML. During local development, run `mkdocs serve` once to generate or update the Markdown output.
 
 ![](https://user-images.githubusercontent.com/17096601/199638378-892ddec9-b7af-4eb8-8ca8-a57c02980f53.png)
 
-
-
 ## Sample
 
-[File](https://github.com/try0/mkdocs-toc-md/blob/main/sample/docs/index.en.md?plain=1)  
-[Site](https://try0.github.io/mkdocs-toc-md/sample/site/)
+- [Generated Markdown](https://github.com/try0/mkdocs-toc-md/blob/main/sample/docs/index.en.md?plain=1)
+- [Sample site](https://try0.github.io/mkdocs-toc-md/sample/site/)
 
+## Installation
 
-
-
-## Usage
-
-### Generates toc markdown file.
-
-1. Install plugin. 
-    ```
-    pip install mkdocs-toc-md
-    ```
-1. Add plugin config to mkdocs.yml.
-
-    ```yml
-    plugins:
-      - toc-md
-    ```
-
-1. Run `mkdocs serve` to output the toc md file.
-
-1. Check docs/index.md.
-
-
-### Adds description.
-If you use metadata (front matter), set the value with toc_md_description as a key.
-```
----
-toc_md_description: pickup target value
----
+```bash
+pip install mkdocs-toc-md
 ```
 
-or use options `pickup_description_meta` `pickup_description_class`.
+## Basic Usage
 
+Add the plugin to `mkdocs.yml`.
 
-
-## Options
-
-Minimum
-```yml
+```yaml
 plugins:
-  - toc-md:
+  - toc-md
 ```
 
-Full
-```yml
-plugins:
-  - toc-md:
-      toc_page_title: Contents
-      toc_page_description: Usage mkdocs-toc-md
-      header_level: 3
-      pickup_description_meta: false
-      pickup_description_class: false
-      output_path: index.md
-      subdir_index_depth: 0
-      overwrite: always
-      output_log: false
-      ignore_page_pattern: index.*.md$
-      remove_navigation_page_pattern: index.*.md$
-      template_dir_path: custom_template
-      subdir_template_name: subdir_toc.md.j2
-      integrate_mkdocs_static_i18n: true
-      languages:
-        en:
-          toc_page_title: Contents
-          toc_page_description: Usage mkdocs-toc-md
-        ja:
-          toc_page_title: 目次
-          toc_page_description: mkdocs-toc-mdプラグインの使い方
-      shift_header: after_h1_of_index
-      extend_module: true
-      output_comment: html
+Then run:
+
+```bash
+mkdocs serve
 ```
 
-### toc_page_title: str  
-h1 text in the table of contents markdown file.
+By default, the plugin generates `docs/index.md`.
 
-default: Contents
+## Add Descriptions
 
-### toc_page_description: str
-The description will be rendered below the h1 tag in the table of contents.
+To show a description under a page heading, add `toc_md_description` to the page front matter.
 
-default: None
+```markdown
+---
+toc_md_description: Description shown in the generated TOC.
+---
+```
 
-### header_level: int  
-Header level (depth) to render.  
-h1→1, h2→2, ...
+You can also extract descriptions from HTML metadata or an element with the `toc-md-description` class by enabling `pickup_description_meta` or `pickup_description_class`.
 
-default: 3
-
-### pickup_description_meta: bool  
-The plugin renders the description after the h2 header in the table of contents markdown file. If you use metadata (front matter), there is no need to set this option.
 ```html
-<mata name="description" content="pickup target value" />
+<meta name="description" content="Description shown in the generated TOC." />
 ```
 
-default: False
-
-### pickup_description_class: bool  
-The plugin renders the description after the h2 header in the table of contents markdown file. If you use metadata (front matter), there is no need to set this option.
-
-```md
-# mkdocs-toc-md
-
+```markdown
 <div class="toc-md-description">
-pickup target value
+Description shown in the generated TOC.
 </div>
 ```
-default: False
 
-### output_path: str  
-Path to save rendered toc md file.  
-index.md → docs/index.md
+## Subdirectory Indexes
 
-default: index.md
+Set `subdir_index_depth` to generate `index.md` files under directories that contain pages listed in `nav`.
 
-### subdir_index_depth: int
-Generate toc markdown files in subdirectories that contain pages listed in `nav`.
-The value controls how deep from the docs root the generated subdirectory files may be.
+```yaml
+plugins:
+  - toc-md:
+      subdir_index_depth: 1
+      overwrite: generated
+```
 
-`0` disables subdirectory toc files.
-`1` targets directories directly under the docs root.
-`2` also targets their child directories.
+With this navigation:
 
-Only directories backed by Markdown pages that appear in `nav` are considered.
+```yaml
+nav:
+  - Guide:
+      - Intro: guide/intro.md
+      - Config: guide/advanced/config.md
+```
 
-default: 0
+`subdir_index_depth: 1` generates:
 
-### overwrite: str (generated, always, never)
+```text
+docs/guide/index.md
+```
 
-`generated`
-Creates a new file, or overwrites an existing file only when it contains a mkdocs-toc-md generated marker.
+The generated `guide/index.md` contains only the nav-backed pages under `guide/`, and links are written relative to `guide/index.md`.
 
-`always` (default)
-Always overwrites an existing file.
+To generate only subdirectory indexes and skip the root output file:
 
-`never`
-Never overwrites an existing file.
+```yaml
+plugins:
+  - toc-md:
+      output_root_index: false
+      subdir_index_depth: 1
+```
 
-default: always
+## Templates
 
-### output_log: bool  
-Output contents of markdown file to console.
+The default template is `toc.md.j2`.
 
-default: False
+To use a custom template directory:
 
-### ignore_page_pattern: str  
-Regular expression pattern of markdown file names to be excluded from toc markdown file.  
-To prevent the table of contents page from listing itself, set the same value as the output file name (output_path).
+```yaml
+plugins:
+  - toc-md:
+      template_dir_path: custom_template
+```
 
-default: ''
+For subdirectory indexes, template selection uses this order:
 
-### remove_navigation_page_pattern: str  
-Regular expression pattern of markdown file names to remove navigation items.  
-To hide the navigation on the table of contents page, set the same value as the output file name (output_path).
+1. `toc.subdir.<parent-directory>.md.j2`
+2. `toc.subdir.md.j2`
+3. `toc.md.j2`
 
-default: ''
+For example, `docs/admin/index.md` first looks for `toc.subdir.admin.md.j2`.
 
-### template_dir_path: str
-Path of template dir.
-Put `toc.md.j2` in your custom template dir.
-
-default: ''
-
-### subdir_template_name: str
-Template file name used for subdirectory toc markdown files.
-If a template matching the parent directory exists, it is used first.
-
-For `docs/guide/index.md`, template selection order is:
-
-1. `index.guide.md.j2`
-1. `subdir_template_name`
-1. `toc.md.j2`
-
-The template receives these additional values:
+Subdirectory templates receive these additional values:
 
 ```text
 data.is_subdir_index
@@ -194,100 +124,217 @@ data.directory_path
 data.directory_depth
 ```
 
-default: None
+## Full Configuration Example
 
-### beautiful_soup_parser: str
-Parser used in BeautifulSoup. Default is html.parser.  
-If using html5lib or lxml, you need to install additional dependencies.
+```yaml
+plugins:
+  - toc-md:
+      toc_page_title: Contents
+      toc_page_description: Usage mkdocs-toc-md
+      header_level: 3
+      pickup_description_meta: false
+      pickup_description_class: false
+      output_path: index.md
+      output_root_index: true
+      subdir_index_depth: 0
+      overwrite: always
+      output_log: false
+      ignore_page_pattern: index.*.md$
+      remove_navigation_page_pattern: index.*.md$
+      template_dir_path: custom_template
+      beautiful_soup_parser: html.parser
+      integrate_mkdocs_static_i18n: true
+      languages:
+        en:
+          toc_page_title: Contents
+          toc_page_description: Usage mkdocs-toc-md
+        ja:
+          toc_page_title: 目次
+          toc_page_description: mkdocs-toc-md プラグインの使い方
+      shift_header: after_h1_of_index
+      extend_module: true
+      output_comment: html
+```
 
-default: html.parser
+## Options
 
-### integrate_mkdocs_static_i18n: bool
-With [mkdocs-static-i18n](https://github.com/ultrabug/mkdocs-static-i18n)
+### `toc_page_title`: `str`
 
-default: False
+H1 text in the generated table-of-contents Markdown file.
 
-### languages: dict
-Use with integrate_mkdocs_static_i18n option.
-Set toc_page_title, toc_page_description for each language.
+Default: `Contents`
 
-```yml
+### `toc_page_description`: `str`
+
+Description rendered below the H1 title.
+
+Default: `None`
+
+### `header_level`: `int`
+
+Heading depth to collect. `1` collects `h1`, `2` collects `h1` through `h2`, and so on.
+
+Default: `3`
+
+### `pickup_description_meta`: `bool`
+
+Read descriptions from `<meta name="description" content="..." />`.
+
+Default: `False`
+
+### `pickup_description_class`: `bool`
+
+Read descriptions from an element with class `toc-md-description`.
+
+Default: `False`
+
+### `output_path`: `str`
+
+Path to save the root generated Markdown file, relative to `docs_dir`.
+
+Default: `index.md`
+
+### `output_root_index`: `bool`
+
+Generate the root TOC Markdown file configured by `output_path`. Set this to `false` when you only want subdirectory TOC files.
+
+Default: `True`
+
+### `subdir_index_depth`: `int`
+
+Generate TOC Markdown files in subdirectories that contain pages listed in `nav`.
+
+- `0`: disable subdirectory TOC files
+- `1`: target directories directly under the docs root
+- `2`: also target their child directories
+
+Only directories backed by Markdown pages that appear in `nav` are considered.
+
+Default: `0`
+
+### `overwrite`: `str`
+
+Controls how existing generated files are handled.
+
+- `always`: always overwrite existing files
+- `generated`: overwrite only when the existing file contains the mkdocs-toc-md generated marker
+- `never`: never overwrite existing files
+
+Default: `always`
+
+When using `generated`, keep `output_comment` enabled or include the generated marker in your custom template.
+
+### `output_log`: `bool`
+
+Print generated Markdown to the console.
+
+Default: `False`
+
+### `ignore_page_pattern`: `str`
+
+Regular expression for Markdown source paths to exclude from the generated TOC. To prevent the TOC page from listing itself, use a pattern that matches `output_path`.
+
+Default: `''`
+
+### `remove_navigation_page_pattern`: `str`
+
+Regular expression for Markdown source paths whose secondary page navigation should be removed from rendered HTML. To hide the navigation on the generated TOC page, use a pattern that matches `output_path`.
+
+Default: `''`
+
+### `template_dir_path`: `str`
+
+Path to a directory containing `toc.md.j2`.
+
+Subdirectory indexes also resolve templates from this directory. The lookup order is:
+
+1. `toc.subdir.<parent-directory>.md.j2`
+2. `toc.subdir.md.j2`
+3. `toc.md.j2`
+
+For example, `docs/admin/index.md` first looks for `toc.subdir.admin.md.j2`.
+
+Default: `''`
+
+### `beautiful_soup_parser`: `str`
+
+Parser used by BeautifulSoup. If you use `html5lib` or `lxml`, install the additional dependency yourself.
+
+Default: `html.parser`
+
+### `integrate_mkdocs_static_i18n`: `bool`
+
+Integrate with [mkdocs-static-i18n](https://github.com/ultrabug/mkdocs-static-i18n).
+
+Default: `False`
+
+### `languages`: `dict`
+
+Per-language settings used with `integrate_mkdocs_static_i18n`.
+
+```yaml
 languages:
-    en:
-        toc_page_title: Contents
-        toc_page_description: Usage mkdocs-toc-md
-    ja:
-        toc_page_title: 目次
-        toc_page_description: mkdocs-toc-mdプラグインの使い方
+  en:
+    toc_page_title: Contents
+    toc_page_description: Usage mkdocs-toc-md
+  ja:
+    toc_page_title: 目次
+    toc_page_description: mkdocs-toc-md プラグインの使い方
 ```
 
-default: dict()
+Default: `dict()`
 
-### shift_header: str (after_index, after_h1_of_index, none)
-`after_index`  
-    Shifts the header level(+1) except for the index file in the directory.
+### `shift_header`: `str`
 
-`after_h1_of_index`  
-    Shifts the header level(+1) after h1 in index file and except for the index file in the directory.
+Controls heading level shifts for index pages.
 
-`none` (default)
+- `after_index`: shift heading levels by `+1` except for the index file in the directory
+- `after_h1_of_index`: shift heading levels by `+1` after H1 in the index file, and for non-index files in the directory
+- `none`: do not shift heading levels
 
-### extend_module: bool
-Some processes can be extended by placing the toc_extend_module.py file in the docs folder.
+Default: `none`
 
+### `extend_module`: `bool`
+
+Enable extension hooks by placing `toc_extend_module.py` in the MkDocs working directory.
+
+```text
+docs/
+mkdocs.yml
+toc_extend_module.py
 ```
-├─ docs
-│  ├─ mkdocs.yml
-│  ├─ toc_extend_module.py
-```
 
-[Sample/toc_extend_module.py](./sample/toc_extend_module.py)
+See [sample/toc_extend_module.py](./sample/toc_extend_module.py).
 
+Available hooks:
 
-`find_src_elements` -> list[bs4.element.Tag]  
-args
+- `find_src_elements(bs_page_soup, page, toc_config) -> list[bs4.element.Tag]`
+- `create_toc_items(page, page_description, src_elements, toc_config) -> list[mkdocs_toc_md.objects.TocItem]`
+- `on_create_toc_item(toc_item, src_element, page, toc_config)`
+- `on_before_output(nav, toc_items, toc_config)`
 
-1. `bs_page_soup`: bs4.BeautifulSoup
-1. `page`: mkdocs.structure.pages.Page
-1. `toc_config`: mkdocs_toc_md.objects.TocConfig
+Default: `False`
 
-`create_toc_items` -> list[mkdocs_toc_md.objects.TocItem]  
-args
+### `output_comment`: `str`
 
-1. `page`: mkdocs.structure.pages.Page
-1. `page_description`: str
-1. `src_elements`: list[bs4.element.Tag]
-1. `toc_config`: mkdocs_toc_md.objects.TocConfig
+Controls the generated marker comment.
 
-`on_create_toc_item`  
-args
+`html`:
 
-1. `toc_item`: mkdocs_toc_md.objects.TocItem
-1. `src_element`: bs4.element.Tag
-1. `page`: mkdocs.structure.pages.Page
-1. `toc_config`: mkdocs_toc_md.objects.TocConfig
-
-`on_before_output`  
-args
-
-1. `nav`: mkdocs.structure.nav.Navigation
-1. `toc_items`: list[mkdocs_toc_md.objects.TocItem]
-1. `toc_config`: mkdocs_toc_md.objects.TocConfig
-
-### output_comment: str (html, metadata, none)
-
-`html` (default)
 ```html
 <!-- ====================== TOC ====================== -->
 <!-- Generated by mkdocs-toc-md plugin -->
 <!-- ================================================= -->
 ```
 
-`metadata`
-```
+`metadata`:
+
+```yaml
 ---
 toc_output_comment: Generated by mkdocs-toc-md plugin
 ---
 ```
- 
-`none`
+
+`none`: no marker comment.
+
+Default: `html`
