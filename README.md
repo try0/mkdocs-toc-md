@@ -65,10 +65,13 @@ plugins:
       pickup_description_meta: false
       pickup_description_class: false
       output_path: index.md
+      subdir_index_depth: 0
+      overwrite: always
       output_log: false
       ignore_page_pattern: index.*.md$
       remove_navigation_page_pattern: index.*.md$
       template_dir_path: custom_template
+      subdir_template_name: subdir_toc.md.j2
       integrate_mkdocs_static_i18n: true
       languages:
         en:
@@ -124,6 +127,31 @@ index.md → docs/index.md
 
 default: index.md
 
+### subdir_index_depth: int
+Generate toc markdown files in subdirectories that contain pages listed in `nav`.
+The value controls how deep from the docs root the generated subdirectory files may be.
+
+`0` disables subdirectory toc files.
+`1` targets directories directly under the docs root.
+`2` also targets their child directories.
+
+Only directories backed by Markdown pages that appear in `nav` are considered.
+
+default: 0
+
+### overwrite: str (generated, always, never)
+
+`generated`
+Creates a new file, or overwrites an existing file only when it contains a mkdocs-toc-md generated marker.
+
+`always` (default)
+Always overwrites an existing file.
+
+`never`
+Never overwrites an existing file.
+
+default: always
+
 ### output_log: bool  
 Output contents of markdown file to console.
 
@@ -146,6 +174,27 @@ Path of template dir.
 Put `toc.md.j2` in your custom template dir.
 
 default: ''
+
+### subdir_template_name: str
+Template file name used for subdirectory toc markdown files.
+If a template matching the parent directory exists, it is used first.
+
+For `docs/guide/index.md`, template selection order is:
+
+1. `index.guide.md.j2`
+1. `subdir_template_name`
+1. `toc.md.j2`
+
+The template receives these additional values:
+
+```text
+data.is_subdir_index
+data.directory_name
+data.directory_path
+data.directory_depth
+```
+
+default: None
 
 ### beautiful_soup_parser: str
 Parser used in BeautifulSoup. Default is html.parser.  

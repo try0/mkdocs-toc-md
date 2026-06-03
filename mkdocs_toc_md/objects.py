@@ -31,6 +31,10 @@ class TocPageData:
     page_title = None
     page_description = None
     toc_headers = []
+    is_subdir_index = False
+    directory_name = None
+    directory_path = None
+    directory_depth = 0
 
 
 class TocItem:
