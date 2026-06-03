@@ -43,6 +43,12 @@ mkdocs-toc-md プラグインの使い方を説明します。
 * [level3 header1](nestfolder/nest.md#level3-header1_1)
 * [level3 header2](nestfolder/nest.md#level3-header2_1)
 * [level3 header3](nestfolder/nest.md#level3-header3_1)
+## [Subdirectory TOC sample](nestfolder/subdir-toc.md#subdirectory-toc-sample)
+This page is listed in the generated nestfolder index.
+
+### [Source page in nav](nestfolder/subdir-toc.md#source-page-in-nav)
+* [Relative links](nestfolder/subdir-toc.md#relative-links)
+### [Generated output](nestfolder/subdir-toc.md#generated-output)
 ## [shift/index.ja.md](shift/index.ja.md#shiftindexjamd)
 indexファイルのh2以降の出力レベルを+1します。
 

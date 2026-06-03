@@ -3,6 +3,7 @@ nav:
   - "index.md"
   - "mkdocs-toc-md.md"
   - nest.md: "nestfolder/nest.md"
+  - subdir toc sample: "nestfolder/subdir-toc.md"
   - shift:
     - index: shift/index.md
     - main: shift/shift.md
@@ -27,6 +28,9 @@ plugins:
       pickup_description_meta: true
       pickup_description_class: true
       output_path: index.md
+      output_root_index: true
+      subdir_index_depth: 1
+      overwrite: generated
       output_log: false
       ignore_page_pattern: index.*.md
       remove_navigation_page_pattern: index.*.md
