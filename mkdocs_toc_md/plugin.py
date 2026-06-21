@@ -121,9 +121,7 @@ class TocMdPlugin(BasePlugin):
         if ignore_file_pattern:
             self.ignore_re = re.compile(ignore_file_pattern)
 
-        self.header_names = []
-        for level in range(self.config['header_level']):
-            self.header_names.append('h' + str(level + 1))
+        self.header_names = self.get_header_names()
 
         self.logger.info('toc-md: Lookup ' + ', '.join(self.header_names))
 
@@ -143,6 +141,24 @@ class TocMdPlugin(BasePlugin):
             # default
 
             self.output(config, self.nav, "", "")
+
+    def get_header_names(self, page=None):
+        """ Heading tag names to collect, allowing per-page front matter override. """
+
+        header_level = self.config['header_level']
+
+        if page is not None and 'toc_md_header_level' in page.meta:
+            try:
+                header_level = int(page.meta['toc_md_header_level'])
+            except (TypeError, ValueError):
+                self.logger.warning(
+                    'toc-md: Ignored invalid toc_md_header_level '
+                    f'"{page.meta["toc_md_header_level"]}" in "{page.file.src_path}".')
+
+        header_names = []
+        for level in range(header_level):
+            header_names.append('h' + str(level + 1))
+        return header_names
 
     def create_toc_items(
             self,
@@ -190,6 +206,10 @@ class TocMdPlugin(BasePlugin):
         if ignore:
             return
 
+        # per-page override via front matter
+        if 'toc_md_ignore' in page.meta and page.meta['toc_md_ignore']:
+            return
+
         soup = BeautifulSoup(
             page.content, self.config['beautiful_soup_parser'])
 
@@ -219,7 +239,7 @@ class TocMdPlugin(BasePlugin):
             src_elements = self.hook.find_src_elements(soup, page)
         else:
             # default
-            src_elements = soup.find_all(self.header_names)
+            src_elements = soup.find_all(self.get_header_names(page))
 
         if self.use_extend_module('create_toc_items'):
             # user impl

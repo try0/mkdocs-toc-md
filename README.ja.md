@@ -58,6 +58,20 @@ toc_md_description: 生成された目次に表示する説明文
 </div>
 ```
 
+## ページ単位の front matter 設定
+
+一部のグローバル設定は、ページの front matter で個別に上書きできます。
+
+```markdown
+---
+toc_md_ignore: true
+toc_md_header_level: 2
+---
+```
+
+- `toc_md_ignore`: 真値のとき、このページを生成される目次から除外します（`ignore_page_pattern` のページ単位版）。
+- `toc_md_header_level`: このページだけ収集する見出しの深さを指定します（`header_level` のページ単位版）。不正な値の場合はグローバルの `header_level` にフォールバックします。
+
 ## サブディレクトリの index 生成
 
 `subdir_index_depth` を設定すると、`nav` に含まれるページの親ディレクトリに `index.md` を生成できます。
@@ -174,6 +188,8 @@ H1 タイトルの下に表示される説明文です。
 
 収集する見出しの深さです。`1` は `h1`、`2` は `h1` から `h2`、という形で収集します。
 
+ページの front matter キー `toc_md_header_level` でページ単位に上書きできます。
+
 デフォルト: `3`
 
 ### `pickup_description_meta`: `bool`
@@ -233,6 +249,8 @@ H1 タイトルの下に表示される説明文です。
 ### `ignore_page_pattern`: `str`
 
 生成される目次から除外する Markdown ソースパスの正規表現です。目次ページ自身を載せたくない場合は、`output_path` に一致するパターンを指定します。
+
+個別のページは front matter キー `toc_md_ignore: true` でも除外できます。
 
 デフォルト: `''`
 

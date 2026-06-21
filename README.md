@@ -58,6 +58,20 @@ Description shown in the generated TOC.
 </div>
 ```
 
+## Per-Page Front Matter
+
+Some global options can be overridden per page through the page front matter.
+
+```markdown
+---
+toc_md_ignore: true
+toc_md_header_level: 2
+---
+```
+
+- `toc_md_ignore`: when truthy, exclude this page from the generated TOC (per-page form of `ignore_page_pattern`).
+- `toc_md_header_level`: heading depth to collect for this page only (per-page form of `header_level`). An invalid value falls back to the global `header_level`.
+
 ## Subdirectory Indexes
 
 Set `subdir_index_depth` to generate `index.md` files under directories that contain pages listed in `nav`.
@@ -174,6 +188,8 @@ Default: `None`
 
 Heading depth to collect. `1` collects `h1`, `2` collects `h1` through `h2`, and so on.
 
+Can be overridden per page with the `toc_md_header_level` front matter key.
+
 Default: `3`
 
 ### `pickup_description_meta`: `bool`
@@ -233,6 +249,8 @@ Default: `False`
 ### `ignore_page_pattern`: `str`
 
 Regular expression for Markdown source paths to exclude from the generated TOC. To prevent the TOC page from listing itself, use a pattern that matches `output_path`.
+
+A single page can also be excluded with the `toc_md_ignore: true` front matter key.
 
 Default: `''`
 
